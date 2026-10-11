@@ -2,7 +2,13 @@ import numpy as np
 import pytest
 
 from kinematix_vibe_coding.inverse_kinematix.angles import save_angles_csv
-from kinematix_vibe_coding.utils.evaluation import EVAL_ANGLES, SYNC_ANGLES, compare_views, evaluate_output
+from kinematix_vibe_coding.utils.evaluation import (
+    EVAL_ANGLES,
+    SYNC_ANGLES,
+    compare_views,
+    evaluate_models,
+    evaluate_output,
+)
 
 
 def make_angles(fps, T, shift_s, seed=0):
@@ -32,3 +38,15 @@ def test_evaluate_output(tmp_path):
     rep = evaluate_output(tmp_path, verbose=False)
     assert rep["mvt"]["mean_rmse_deg"] < 3
     assert (tmp_path / "mvt" / "comparaison_multivues.png").exists()
+
+
+def test_evaluate_models_table(tmp_path):
+    for model in ("m1", "m2"):
+        for name, fps in [("cam0", 30.0), ("cam1", 25.0)]:
+            d = tmp_path / model / "mvt" / name
+            d.mkdir(parents=True)
+            t, ang = make_angles(fps, 150, 0.0)
+            save_angles_csv(d / "joint_angles.csv", t, ang)
+    res = evaluate_models(tmp_path, verbose=False)
+    assert set(res) == {"m1", "m2"}
+    assert "| m1 |" in (tmp_path / "comparaison_modeles.md").read_text()

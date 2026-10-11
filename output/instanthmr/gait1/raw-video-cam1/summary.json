@@ -1,0 +1,70 @@
+{
+  "video": "data/gait1/raw-video-cam1.mp4",
+  "backend": "instanthmr",
+  "n_frames": 129,
+  "fps": 30.012796153398735,
+  "height_m": 1.8,
+  "data_scale": 1.0129854326778438,
+  "dimensions_m": {
+    "ankle_height": 0.07081708402309214,
+    "shank": 0.4061762571622605,
+    "thigh": 0.42135930711812564,
+    "hip_width": 0.16807327216071818,
+    "pelvis_to_lumbar": 0.11353668463235053,
+    "torso": 0.4710699924366921,
+    "shoulder_width": 0.376380126481251,
+    "shoulder_drop": 0.041929623795323376,
+    "neck_to_eyes": 0.1997895705475784,
+    "eyes_to_top": 0.11715885189511024,
+    "upper_arm": 0.29016089624180286,
+    "forearm": 0.2700699255316242,
+    "hand": 0.08594414337359443,
+    "foot_length": 0.2374393038630639,
+    "heel_back": 0.07043911208936754
+  },
+  "model_standing_height_m": 1.7999077478152095,
+  "calibration_rmse_cm": {
+    "before": 1.6406069337045803,
+    "after": 0.5629607445562504
+  },
+  "ik_marker_error_cm": {
+    "median": 1.046533789928061,
+    "mean": 1.644690647649851
+  },
+  "reprojection_error_px": {
+    "median": 6.166893598208791,
+    "mean": 10.190373639531067
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 40.28556377610115,
+    "sliding_drift_mean_cm": 10.325809737504864,
+    "contact_ratio": 0.21188630490956073
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 22.3310747190929,
+    "sliding_drift_mean_cm": 2.5738669420527867,
+    "contact_ratio": 0.21188630490956073
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "treadmill_max_root_speed": 0.3,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 27.40368983299959,
+    "pose_loading_s": 0.0026180000004387693,
+    "calibration_s": 1.4865154580002127,
+    "ik_pass1_s": 0.3777330829998391,
+    "ik_pass2_s": 0.4588532080015284,
+    "outputs_s": 1.803142917000514,
+    "total_s": 31.529934499001683
+  }
+}

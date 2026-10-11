@@ -125,7 +125,7 @@ def run_pipeline(video: str | Path, out_dir: str | Path, cfg: PipelineConfig | N
     # 6. contacts + IK passe 2 anti-glissement ---------------------------------------------------
     t0 = time.perf_counter()
     groups = [[i for i, n in enumerate(FOOT_MARKERS) if n.startswith(side)] for side in ("left", "right")]
-    contacts = detect_contacts(foot, ik.ground_offsets, fps, cfg.contact, groups)
+    contacts = detect_contacts(foot, ik.ground_offsets, fps, cfg.contact, groups, root_pos=qpos[:, :3])
     sliding_before = foot_sliding(foot, contacts.mask, contacts.belt_velocity, fps)
     if cfg.anti_sliding and contacts.mask.any():
         extras = contact_extras(contacts, foot_ids, cfg.contact.weight)

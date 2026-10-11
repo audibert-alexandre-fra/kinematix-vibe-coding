@@ -24,7 +24,8 @@ class ContactConfig:
     stance_margin: float = 0.03        # m : pied d'appui = pied le plus bas avec cette marge
     min_frames: int = 3
     treadmill_min_speed: float = 0.2   # m/s : en-dessous, sol fixe
-    weight: float = 50.0               # poids des cibles de contact dans l'IK
+    treadmill_max_root_speed: float = 0.3  # m/s : sur tapis, le bassin reste quasi sur place
+    weight: float = 50.0               # poids des cibles de contact (compromis anti-glissement / précision)
 
 
 @dataclass
@@ -40,9 +41,12 @@ def horizontal_velocity(p: np.ndarray, fps: float) -> np.ndarray:
 
 
 def detect_contacts(foot_pos: np.ndarray, flat_heights: np.ndarray, fps: float,
-                    cfg: ContactConfig | None = None, foot_groups: list[list[int]] | None = None) -> ContactResult:
+                    cfg: ContactConfig | None = None, foot_groups: list[list[int]] | None = None,
+                    root_pos: np.ndarray | None = None) -> ContactResult:
     """`foot_pos` : (T, F, 3) positions monde des sites de pied ; `flat_heights` : (F,) ;
-    `foot_groups` : indices des points de chaque pied (ex. [[0, 2, 4], [1, 3, 5]])."""
+    `foot_groups` : indices des points de chaque pied (ex. [[0, 2, 4], [1, 3, 5]]) ;
+    `root_pos` : (T, 3) trajectoire du bassin — un tapis roulant n'est retenu que si le bassin
+    reste sur place alors que les pieds en appui reculent."""
     cfg = cfg or ContactConfig()
     T, F, _ = foot_pos.shape
     h = foot_pos[..., 2] - flat_heights[None]
@@ -52,8 +56,11 @@ def detect_contacts(foot_pos: np.ndarray, flat_heights: np.ndarray, fps: float,
     if low.sum() > 5:
         cand = v[low]
         med = np.median(cand, axis=0)
-        # tapis roulant : vitesse commune des pieds au sol, nettement non nulle
-        if np.linalg.norm(med) > cfg.treadmill_min_speed:
+        # tapis roulant : vitesse commune des pieds au sol nettement non nulle ET bassin immobile
+        root_speed = 0.0
+        if root_pos is not None and len(root_pos) > 1:
+            root_speed = float(np.linalg.norm(root_pos[-1, :2] - root_pos[0, :2]) / (len(root_pos) / fps))
+        if np.linalg.norm(med) > cfg.treadmill_min_speed and root_speed < cfg.treadmill_max_root_speed:
             belt = med
     rel_speed = np.linalg.norm(v - belt, axis=-1)
     mask = low & (rel_speed < cfg.speed_threshold)

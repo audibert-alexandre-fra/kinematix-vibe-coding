@@ -130,3 +130,30 @@ def _plot_group(folder: Path, views: dict) -> None:
     fig.tight_layout()
     fig.savefig(folder / "comparaison_multivues.png", dpi=90)
     plt.close(fig)
+
+
+def evaluate_models(out_root: Path, verbose: bool = True) -> dict:
+    """Évalue chaque modèle (sous-dossier output/<backend>/) et écrit un tableau comparatif."""
+    results = {}
+    for d in sorted(p for p in out_root.iterdir() if p.is_dir()):
+        if any(d.rglob("joint_angles.csv")):
+            if verbose:
+                print(f"=== {d.name} ===")
+            results[d.name] = evaluate_output(d, verbose)
+    lines = ["# Cohérence multi-vues par modèle (RMSE moyenne des angles entre caméras, degrés)", ""]
+    groups = sorted({g for r in results.values() for g in r})
+    lines.append("| modèle | " + " | ".join(groups) + " |")
+    lines.append("|---|" + "---|" * len(groups))
+    for m, r in results.items():
+        lines.append(f"| {m} | " + " | ".join(f"{r[g]['mean_rmse_deg']:.1f}" if g in r else "-" for g in groups) + " |")
+    lines += ["", "Détail par angle :", ""]
+    for g in groups:
+        lines.append(f"## {g}")
+        lines.append("| angle | " + " | ".join(results) + " |")
+        lines.append("|---|" + "---|" * len(results))
+        for a in EVAL_ANGLES:
+            vals = [f"{r[g]['mean_rmse_per_angle_deg'][a]:.1f}" if g in r else "-" for r in results.values()]
+            lines.append(f"| {a} | " + " | ".join(vals) + " |")
+        lines.append("")
+    (out_root / "comparaison_modeles.md").write_text("\n".join(lines))
+    return results

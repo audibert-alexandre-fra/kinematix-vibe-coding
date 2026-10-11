@@ -38,3 +38,12 @@ def test_detect_contacts_treadmill():
     assert c.mask.mean() > 0.3
     s = foot_sliding(p, c.mask, c.belt_velocity, 30.0)
     assert s["sliding_speed_mean_cm_s"] < 5  # pas de glissement relatif au tapis
+
+
+def test_overground_walking_is_not_a_treadmill():
+    """Marche au sol : les pieds bas bougent (bruit, fin d'appui) mais le bassin avance -> pas de tapis."""
+    p = stepping_foot(belt=-0.8)  # mêmes vitesses de pied que sur tapis...
+    root = np.zeros((len(p), 3))
+    root[:, 0] = np.arange(len(p)) / 30.0 * 1.2  # ...mais le bassin avance à 1,2 m/s
+    c = detect_contacts(p, np.zeros(1), 30.0, root_pos=root)
+    np.testing.assert_allclose(c.belt_velocity, 0)

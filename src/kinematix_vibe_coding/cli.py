@@ -1,8 +1,9 @@
 """Point d'entrée en ligne de commande.
 
     uv run kinematix run data/squat1/raw-video-cam0.mp4 --height 1.80 --out output
-    uv run kinematix batch data --out output           # tailles lues dans data/heights.json
-    uv run kinematix evaluate output                   # cohérence multi-vues
+    uv run kinematix batch data --out output           # -> output/<backend>/<mouvement>/<vidéo>/
+    uv run kinematix batch data --backend metrabs      # référence MeTRAbs (non commerciale)
+    uv run kinematix evaluate output                   # cohérence multi-vues, par modèle
 """
 
 from __future__ import annotations
@@ -64,9 +65,9 @@ def main(argv: list[str] | None = None) -> int:
     os.environ.setdefault("TQDM_DISABLE", "1")
 
     if args.cmd == "evaluate":
-        from .utils.evaluation import evaluate_output
+        from .utils.evaluation import evaluate_models
 
-        evaluate_output(Path(args.out))
+        evaluate_models(Path(args.out))
         return 0
 
     from .pipeline import PipelineConfig, run_pipeline
@@ -78,18 +79,19 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "run":
         video = Path(args.video)
-        run_pipeline(video, Path(args.out) / video.stem, cfg(args.height))
+        run_pipeline(video, Path(args.out) / args.backend / video.stem, cfg(args.height))
         return 0
 
     data_root = Path(args.data)
+    out_root = Path(args.out) / args.backend
     hpath = Path(args.heights) if args.heights else data_root / "heights.json"
     heights = json.loads(hpath.read_text()) if hpath.exists() else {}
     results = {}
     for video in find_videos(data_root):
         h = height_for(video, data_root, heights, args.default_height)
-        res = run_pipeline(video, output_dir_for(video, data_root, Path(args.out)), cfg(h))
+        res = run_pipeline(video, output_dir_for(video, data_root, out_root), cfg(h))
         results[str(video)] = res.summary
-    with open(Path(args.out) / "batch_summary.json", "w") as f:
+    with open(out_root / "batch_summary.json", "w") as f:
         json.dump(results, f, indent=2)
     return 0
 

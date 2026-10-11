@@ -98,3 +98,14 @@ def test_sam3d_parquet_adapter(tmp_path):
     assert len(seq) == 4 and seq.valid.all()
     np.testing.assert_allclose(seq.joints3d_cam[2, 0], [0.2, 0.2, 3.2])
     assert seq.intrinsics.fx == 80.0
+
+
+def test_metrabs_mapping():
+    from kinematix_vibe_coding.models.metrabs import MOVI87_NAMES, movi_to_mhr70
+
+    assert len(MOVI87_NAMES) == 87
+    p3 = np.random.rand(3, 87, 3)
+    j3, j2, conf = movi_to_mhr70(p3, np.random.rand(3, 87, 2))
+    np.testing.assert_allclose(j3[:, mhr70("left_knee")], p3[:, MOVI87_NAMES.index("LKnee")])
+    assert conf[0, mhr70("left_index_tip")] == 0 and conf[0, mhr70("right_hip")] == 1
+    assert "metrabs" in available_backends()
