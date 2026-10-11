@@ -151,11 +151,14 @@ def run_pipeline(video: str | Path, out_dir: str | Path, cfg: PipelineConfig | N
     with open(out / "model.xml", "w") as f:
         f.write(hum.rebuilt().spec.to_xml())
     if cfg.render:
-        from .utils.render import render_overlay
+        from .utils.render import render_overlay, render_skeleton_overlay
 
-        render_overlay(video, out / f"overlay_{video.stem}.mp4", uv_model, hum.site_names, contacts.mask,
-                       FOOT_MARKERS, uv_obs if cfg.draw_keypoints else None,
-                       label=f"{video.parent.name}/{video.stem} - MuJoCo IK ({cfg.backend})")
+        label = f"{video.parent.name}/{video.stem} - squelette MuJoCo ({cfg.backend})"
+        render_skeleton_overlay(video, out / f"overlay_{video.stem}.mp4", hum.rebuilt(), qpos, cam,
+                                contacts.mask, foot_ids, label=label)
+        if cfg.draw_keypoints:
+            render_overlay(video, out / f"debug_markers_{video.stem}.mp4", uv_model, hum.site_names,
+                           contacts.mask, FOOT_MARKERS, uv_obs, label=label)
     timings["outputs_s"] = time.perf_counter() - t0
     timings["total_s"] = timings["pose_estimation_s"] + sum(
         v for k, v in timings.items() if k not in ("pose_estimation_s", "pose_loading_s"))

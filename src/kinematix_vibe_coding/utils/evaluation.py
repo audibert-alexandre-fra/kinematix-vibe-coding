@@ -3,7 +3,8 @@
 Les vidéos d'un même sous-dossier de `data/` filment le même mouvement depuis des caméras
 différentes : les angles articulaires estimés doivent être identiques. Pour chaque paire de
 vues on synchronise les signaux (décalage maximisant la corrélation, les vidéos n'étant pas
-synchronisées et pouvant avoir des fps différents), puis on calcule RMSE et corrélation.
+synchronisées à l'image près et pouvant avoir des fps différents ; recherche limitée à
++-0,5 s car les vues d'un même dossier ont la même durée et les mouvements sont périodiques), puis on calcule RMSE et corrélation.
 """
 
 from __future__ import annotations
@@ -56,7 +57,7 @@ def find_lag(a: np.ndarray, b: np.ndarray, max_lag: int) -> tuple[int, float]:
     return best, float(best_c)
 
 
-def compare_views(a: tuple[np.ndarray, dict], b: tuple[np.ndarray, dict], max_lag_s: float = 3.0) -> dict:
+def compare_views(a: tuple[np.ndarray, dict], b: tuple[np.ndarray, dict], max_lag_s: float = 0.5) -> dict:
     (ta, A), (tb, B) = a, b
     lag, corr = find_lag(_sync_signal(A, ta), _sync_signal(B, tb), int(max_lag_s * RATE))
     out = {"lag_s": lag / RATE, "sync_correlation": corr, "angles": {}}

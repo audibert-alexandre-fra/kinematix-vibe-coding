@@ -39,7 +39,7 @@ def hum():
 
 def test_ik_recovers_synthetic_pose(hum):
     rng = np.random.default_rng(0)
-    ik = MarkerIK(hum, MARKERS, IKConfig(posture_weight=0.0, ground_weight=0.0, max_iters=100))
+    ik = MarkerIK(hum, MARKERS, IKConfig(posture_weight=0.0, joint_priors={}, ground_weight=0.0, max_iters=100))
     ids = [hum.site_id(n) for n in MARKERS]
     for _ in range(3):
         q_true = random_pose(hum, rng)

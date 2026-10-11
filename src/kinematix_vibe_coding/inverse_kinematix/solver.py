@@ -46,6 +46,12 @@ class IKConfig:
     tol: float = 1e-7
     smooth_weight: float = 0.02      # continuité vers l'image précédente (par dof, en rad/m)
     posture_weight: float = 1e-3     # a priori vers la pose neutre (articulations)
+    # a priori renforcés : la bascule du bassin n'est observable que via 2 marqueurs de hanche,
+    # on préfère donc expliquer l'inclinaison du tronc par le bassin plutôt que par le rachis
+    joint_priors: dict[str, float] = field(default_factory=lambda: {
+        "lumbar_flexion": 0.02, "lumbar_bending": 0.02, "lumbar_rotation": 0.02,
+        "clavicle_elevation_l": 0.01, "clavicle_elevation_r": 0.01,
+        "clavicle_protraction_l": 0.01, "clavicle_protraction_r": 0.01})
     reproj_weight: float = 0.0       # poids relatif des résidus 2D (0 = désactivé)
     sigma_px: float = 15.0           # écart-type des keypoints 2D (pixels) ~ 1 cm en 3D
     ground_sites: list[str] = field(default_factory=lambda: [
@@ -67,6 +73,9 @@ class MarkerIK:
         # dofs articulaires (pas la liberté du bassin) pour l'a priori de posture
         self.joint_dof_mask = np.ones(nv, bool)
         self.joint_dof_mask[:6] = False
+        self.prior_w = np.full(nv, self.cfg.posture_weight)
+        for name, w in self.cfg.joint_priors.items():
+            self.prior_w[self.m.jnt_dofadr[self.m.joint(name).id]] = w
         self._hinge = [(int(self.m.jnt_qposadr[j]), self.m.jnt_range[j]) for j in range(self.m.njnt)
                        if self.m.jnt_type[j] == mujoco.mjtJoint.mjJNT_HINGE and self.m.jnt_limited[j]]
 
@@ -134,12 +143,12 @@ class MarkerIK:
             sw = np.sqrt(self.cfg.smooth_weight)
             rows_r.append(sw * dq)
             rows_J.append(sw * np.eye(nv))
-        if self.cfg.posture_weight > 0:
+        if self.prior_w[self.joint_dof_mask].max() > 0:
             dq = np.zeros(nv)
             mujoco.mj_differentiatePos(self.m, dq, 1.0, self.m.qpos0, q)
-            sw = np.sqrt(self.cfg.posture_weight)
-            rows_r.append(sw * dq[self.joint_dof_mask])
-            rows_J.append(sw * np.eye(nv)[self.joint_dof_mask])
+            sw = np.sqrt(self.prior_w)
+            rows_r.append((sw * dq)[self.joint_dof_mask])
+            rows_J.append(np.diag(sw)[self.joint_dof_mask])
         return np.concatenate(rows_r), np.vstack(rows_J)
 
     def solve(self, q_init, targets, weights, extra=(), q_prev=None, obs2d=None, w2d=None, cam=None):
