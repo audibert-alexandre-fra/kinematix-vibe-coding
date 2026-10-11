@@ -72,14 +72,25 @@ def main():
                 x = torch.from_numpy(np.stack(frames[s:e])).permute(0, 3, 1, 2)
                 bx = [torch.tensor([[b[0], b[1], b[2] - b[0], b[3] - b[1]]], dtype=torch.float32)
                       for b in boxes[s:e]]
-                pred = model.estimate_smpl_batched(x, bx, intrinsic_matrix=K)
-                for i in range(e - s):
-                    j3 = pred["joints3d_nonparam"][i][0].numpy()
-                    v3 = pred["vertices3d"][i][0].numpy()[vidx]
-                    J3[s + i] = np.concatenate([j3, v3]) / 1000.0
-                    J2[s + i] = np.concatenate([pred["joints2d_nonparam"][i][0].numpy(),
-                                                pred["vertices2d"][i][0].numpy()[vidx]])
-                    U[s + i] = pred["joint_uncertainties"][i][0].numpy()
+                try:
+                    preds = [(range(s, e), model.estimate_smpl_batched(x, bx, intrinsic_matrix=K))]
+                except RuntimeError:  # ajustement SMPL non convergent (SVD) sur une image : image par image
+                    preds = []
+                    for i in range(e - s):
+                        try:
+                            preds.append(([s + i], model.estimate_smpl_batched(x[i:i + 1], bx[i:i + 1],
+                                                                                intrinsic_matrix=K)))
+                        except RuntimeError:
+                            found[s + i] = False
+                            print(f"  image {s + i} : échec NLF, ignorée", flush=True)
+                for frames_idx, pred in preds:
+                    for i, f_i in enumerate(frames_idx):
+                        j3 = pred["joints3d_nonparam"][i][0].numpy()
+                        v3 = pred["vertices3d"][i][0].numpy()[vidx]
+                        J3[f_i] = np.concatenate([j3, v3]) / 1000.0
+                        J2[f_i] = np.concatenate([pred["joints2d_nonparam"][i][0].numpy(),
+                                                  pred["vertices2d"][i][0].numpy()[vidx]])
+                        U[f_i] = pred["joint_uncertainties"][i][0].numpy()
                 print(f"  {video.name} {e}/{T} ({time.time() - t2:.0f} s)", flush=True)
         dt = time.time() - t2
         np.savez_compressed(dst, joints3d=J3, joints2d=J2, scores=np.ones(J3.shape[:2]), uncertainties=U,

@@ -3,7 +3,9 @@ l'environnement MMPose (Python 3.10, torch 2.1, mmcv 2.1 compilé, mmdet 3.2, mm
 
     third_party/envs/mmpose/.venv/bin/python tools/run_rtmw3d.py data --out weights/rtmw3d_cache
 
-Détecteur : RTMDet-m personne (MMDetection). Pose : projects/rtmpose3d (RTMW3D-L, Cocktail14).
+Personne principale : boîtes RF-DETR + suivi de `output/instanthmr/<sous-dossier>/<vidéo>/pose_instanthmr.npz`
+si disponibles (même détection pour tous les modèles), sinon RTMDet-m personne (MMDetection)
++ continuité IoU (RTMDet seul choisit parfois une personne coupée au premier plan, gait1/cam0). Pose : projects/rtmpose3d (RTMW3D-L, Cocktail14).
 RTMW3D prédit des coordonnées pixels (x, y) et une profondeur RELATIVE au bassin z (m) ; la
 profondeur absolue est reconstruite dans models/cached.py (longueurs de segments).
 """
@@ -31,6 +33,7 @@ def main():
     p.add_argument("data")
     p.add_argument("--out", default="weights/rtmw3d_cache")
     p.add_argument("--device", default="cpu")
+    p.add_argument("--boxes", default=str(ROOT / "output/instanthmr"), help="dossier des pose_instanthmr.npz")
     a = p.parse_args()
     sys.path.insert(0, str(MMPOSE / "projects/rtmpose3d"))
     import rtmpose3d  # noqa: F401  (enregistre les modules RTMW3D)
@@ -49,6 +52,12 @@ def main():
         dst = out / f"{video.parent.name}__{video.stem}.npz"
         if dst.exists():
             continue
+        bfile = Path(a.boxes) / video.parent.name / video.stem / "pose_instanthmr.npz"
+        ref_boxes, det_s = None, 0.0
+        if bfile.exists():
+            ref = np.load(bfile)
+            ref_boxes = ref["bbox"]
+            det_s = dict(zip(ref["timings_keys"].tolist(), ref["timings_values"].tolist())).get("detection_s", 0.0)
         cap = cv2.VideoCapture(str(video))
         fps = cap.get(cv2.CAP_PROP_FPS)
         J2, Z, S, B, V = [], [], [], [], []
@@ -60,6 +69,14 @@ def main():
                 break
             n += 1
             h, w = frame.shape[:2]
+            if ref_boxes is not None:
+                bx = ref_boxes[min(n - 1, len(ref_boxes) - 1)].astype(np.float32)
+                res = inference_topdown(pose, frame, bx[None])[0].pred_instances
+                kp = np.squeeze(res.keypoints, axis=tuple(range(res.keypoints.ndim - 2)))
+                uv = np.squeeze(res.transformed_keypoints, axis=tuple(range(res.transformed_keypoints.ndim - 2)))
+                J2.append(uv); Z.append(kp[:, 2] - kp[[11, 12], 2].mean())
+                S.append(np.asarray(res.keypoint_scores).reshape(-1)); B.append(bx); V.append(True)
+                continue
             inst = inference_detector(det, frame).pred_instances.cpu().numpy()
             keep = (inst.labels == 0) & (inst.scores > 0.3)
             boxes, scores = inst.bboxes[keep], inst.scores[keep]
@@ -85,7 +102,7 @@ def main():
             sc = np.asarray(res.keypoint_scores).reshape(-1)
             root_z = kp[[11, 12], 2].mean()
             J2.append(uv); Z.append(kp[:, 2] - root_z); S.append(sc); B.append(boxes[k]); V.append(True)
-        dt = time.time() - t1
+        dt = time.time() - t1 + det_s
         J2a, Za = np.array(J2, float), np.array(Z, float)
         j3 = np.concatenate([np.zeros_like(J2a), Za[..., None]], -1)   # seule la profondeur relative est utile
         np.savez_compressed(dst, joints3d=j3, joints2d=J2a, scores=np.array(S, float), boxes=np.array(B, float),

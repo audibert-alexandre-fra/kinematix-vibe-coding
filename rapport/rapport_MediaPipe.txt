@@ -1,0 +1,55 @@
+RAPPORT — MediaPipe Pose Landmarker (BlazePose GHUM, modèle "heavy")
+Date : 2026-10-11 — Machine : Apple M3 Pro (CPU, 36 Go), pas de GPU NVIDIA
+Source : https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker  (pip mediapipe 1.1.0)
+
+1. LICENCE
+  Code et modèle Apache-2.0 : USAGE COMMERCIAL AUTORISÉ.
+
+2. INSTALLATION — SUCCÈS (avec une difficulté)
+  - mediapipe impose opencv-contrib-python, en conflit avec opencv-python-headless du projet
+    (même module cv2) -> environnement séparé : third_party/envs/mediapipe (uv, Python 3.12).
+  - Modèle pose_landmarker_heavy.task (30 Mo) téléchargé dans weights/mediapipe/.
+  - Script : tools/run_mediapipe.py -> weights/mediapipe_cache/ ; backend `--backend mediapipe`.
+
+3. SORTIES ET INTÉGRATION
+  33 points (BlazePose) : 2D (px) + "world landmarks" 3D métriques centrés au bassin (axes de
+  l'image) + visibilité. Points convertis vers nos marqueurs MHR70 (models/cached.py) : hanches,
+  genoux, chevilles, talons, pointe du pied (-> gros orteil, poids 0,7), épaules, coudes, poignets,
+  index/auriculaire, yeux, oreilles, nez ; cou = milieu des épaules. Pas d'acromion ni de petit orteil.
+  La translation caméra (absente des world landmarks) est estimée image par image par moindres
+  carrés linéaires sur la reprojection 2D.
+
+4. DIFFICULTÉS
+  - Plusieurs personnes : sur gait1/cam0, MediaPipe (plein cadre, mode VIDEO) suivait une personne
+    assise au premier plan, coupée par le bord de l'image (écart de 800 px avec InstantHMR, calibration
+    à 25 cm d'erreur). Correction : MediaPipe tourne sur un recadrage (carré 1,3 x boîte, 512 px)
+    autour de la personne principale détectée par RF-DETR + suivi (même détection que les autres
+    modèles). Résultat : écart 2D avec InstantHMR de 4-9 px, erreur de calibration 1,7 cm.
+  - Hanches BlazePose placées plus haut que les centres articulaires : absorbé par les offsets de
+    marqueurs de la calibration automatique.
+
+5. TEMPS D'INFÉRENCE (CPU M3 Pro)
+  - Pose seule : ≈ 50 ms/image (plein cadre) ; ≈ 88 ms/image (recadrage, mode IMAGE, détection
+    interne de MediaPipe à chaque image).
+  - Avec la détection RF-DETR : 146–221 ms/image. Pipeline complète 13–61 s par vidéo (< 5 min).
+  - GPU (estimation) : MediaPipe est conçu pour le mobile ; ≈ 5–10 ms/image sur GPU (delegate GPU),
+    la détection RF-DETR devenant le poste principal (≈ 10–20 ms/image sur GPU NVIDIA).
+
+6. RÉSULTATS DANS LA PIPELINE (output/mediapipe)
+  Vidéo                      images  total (s)  calib. (cm)  reproj. (px)  dérive pied (cm) avant->après
+  gait1/cam0                   130     33.4        1.7          7.6          4.2 -> 0.2
+  gait1/cam1                   129     28.8        2.0          9.4          6.7 -> 0.5
+  gait1/cam2                   129     29.7        2.0         11.6          6.4 -> 1.1
+  gait2/cam0old                305     61.1        2.8         18.3          8.3 -> 1.0
+  jumpingjack/cam2              42     12.9        2.5          7.5          9.2 -> 0.7
+  random1/cam1                 256     41.7        1.8          5.0         15.5 -> 0.7
+  squat1/cam0                  172     32.2        2.3          7.5          5.3 -> 0.4
+  squat1/cam1                  207     36.2        2.4          7.4          8.6 -> 0.4
+  squat1/cam2                  207     36.0        2.0          8.2          6.5 -> 0.7
+  Cohérence multi-vues (RMSE moyenne des angles entre caméras) : gait1 10,9°, squat1 16,7°
+  (InstantHMR 8,2° / 13,0° ; MeTRAbs 5,7° / 8,3°) — voir output/comparaison_modeles.md.
+
+7. CONCLUSION
+  Le plus rapide et le plus simple à déployer, licence commerciale, mais la 3D (world landmarks)
+  est la moins précise des modèles testés : profondeur peu fiable (flexion hanche/cheville, coudes),
+  pas de petit orteil. Utile comme solution légère / temps réel, pas comme modèle de référence.
