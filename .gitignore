@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+# poids des modèles (téléchargés à la demande)
+weights/
+*.onnx
+*.pth
+*.ckpt
+# sorties lourdes
+output/**/*.mp4
+output/**/*.npz
+!output/**/overlay_*.mp4
+third_party/
+.DS_Store
+init.sh
