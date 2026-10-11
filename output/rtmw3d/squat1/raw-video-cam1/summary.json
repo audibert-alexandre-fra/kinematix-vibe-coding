@@ -1,0 +1,70 @@
+{
+  "video": "data/squat1/raw-video-cam1.mp4",
+  "backend": "rtmw3d",
+  "n_frames": 207,
+  "fps": 30.012613997187223,
+  "height_m": 1.8,
+  "data_scale": 0.8047044819628121,
+  "dimensions_m": {
+    "ankle_height": 0.11231999999999999,
+    "shank": 0.34924048016478226,
+    "thigh": 0.3028187886897522,
+    "hip_width": 0.23980759680612562,
+    "pelvis_to_lumbar": 0.08334057448896053,
+    "torso": 0.4174019830161045,
+    "shoulder_width": 0.373309976840518,
+    "shoulder_drop": 0.05759999999999018,
+    "neck_to_eyes": 0.33984,
+    "eyes_to_top": 0.18432,
+    "upper_arm": 0.22495679871801239,
+    "forearm": 0.24488753680979405,
+    "hand": 0.14548191305400623,
+    "foot_length": 0.2410186877483299,
+    "heel_back": 0.06867956442681993
+  },
+  "model_standing_height_m": 1.7892818263595993,
+  "calibration_rmse_cm": {
+    "before": 9.237839875552796,
+    "after": 6.627257790930137
+  },
+  "ik_marker_error_cm": {
+    "median": 5.037841934288887,
+    "mean": 5.737145473940167
+  },
+  "reprojection_error_px": {
+    "median": 4.231133632317398,
+    "mean": 5.220689915015951
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 33.35297252882568,
+    "sliding_drift_mean_cm": 3.7238894134347658,
+    "contact_ratio": 0.1996779388083736
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 18.8733248593363,
+    "sliding_drift_mean_cm": 0.7093315583290868,
+    "contact_ratio": 0.1996779388083736
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "treadmill_max_root_speed": 0.3,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 106.29840498715294,
+    "pose_loading_s": 0.05556737499864539,
+    "calibration_s": 3.2921829160004563,
+    "ik_pass1_s": 3.162455666002643,
+    "ik_pass2_s": 3.175873624997621,
+    "outputs_s": 1.1596815000011702,
+    "total_s": 117.08859869415483
+  }
+}

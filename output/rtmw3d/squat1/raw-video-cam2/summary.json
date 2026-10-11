@@ -1,0 +1,70 @@
+{
+  "video": "data/squat1/raw-video-cam2.mp4",
+  "backend": "rtmw3d",
+  "n_frames": 207,
+  "fps": 30.01841709647948,
+  "height_m": 1.8,
+  "data_scale": 0.8428307675530547,
+  "dimensions_m": {
+    "ankle_height": 0.11231999999999982,
+    "shank": 0.34421167117049795,
+    "thigh": 0.342153356013587,
+    "hip_width": 0.21316563674800942,
+    "pelvis_to_lumbar": 0.1144677541961809,
+    "torso": 0.3513570711061195,
+    "shoulder_width": 0.29226091625210265,
+    "shoulder_drop": 0.057600000000000005,
+    "neck_to_eyes": 0.33984,
+    "eyes_to_top": 0.18432,
+    "upper_arm": 0.26428215650218395,
+    "forearm": 0.21750113106955674,
+    "hand": 0.15839999999999937,
+    "foot_length": 0.23154924035258007,
+    "heel_back": 0.07308840487721224
+  },
+  "model_standing_height_m": 1.788669852486385,
+  "calibration_rmse_cm": {
+    "before": 13.051705261193908,
+    "after": 7.675697180497096
+  },
+  "ik_marker_error_cm": {
+    "median": 6.330448915356281,
+    "mean": 7.208316588805834
+  },
+  "reprojection_error_px": {
+    "median": 7.285389425448267,
+    "mean": 8.860602534446087
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 45.13901719093549,
+    "sliding_drift_mean_cm": 8.238745669154124,
+    "contact_ratio": 0.2648953301127214
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 14.480081982435667,
+    "sliding_drift_mean_cm": 1.286993628513912,
+    "contact_ratio": 0.2648953301127214
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "treadmill_max_root_speed": 0.3,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 113.2962136037595,
+    "pose_loading_s": 0.051867665999452583,
+    "calibration_s": 3.7587251250006375,
+    "ik_pass1_s": 2.97132000000056,
+    "ik_pass2_s": 2.78902379200008,
+    "outputs_s": 1.052657915999589,
+    "total_s": 123.86794043676036
+  }
+}

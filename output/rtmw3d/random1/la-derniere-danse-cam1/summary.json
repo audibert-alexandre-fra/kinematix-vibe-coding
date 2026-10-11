@@ -1,0 +1,70 @@
+{
+  "video": "data/random1/la-derniere-danse-cam1.mp4",
+  "backend": "rtmw3d",
+  "n_frames": 256,
+  "fps": 26.78,
+  "height_m": 1.8,
+  "data_scale": 0.8913135810006345,
+  "dimensions_m": {
+    "ankle_height": 0.08495308491837388,
+    "shank": 0.3380704056520115,
+    "thigh": 0.36284964423322474,
+    "hip_width": 0.20167702758181885,
+    "pelvis_to_lumbar": 0.09721977414438207,
+    "torso": 0.4172392468231491,
+    "shoulder_width": 0.360472473290783,
+    "shoulder_drop": 0.05311848370761538,
+    "neck_to_eyes": 0.33984,
+    "eyes_to_top": 0.15782062471515815,
+    "upper_arm": 0.2504663314522139,
+    "forearm": 0.2732965093222157,
+    "hand": 0.10741980131617072,
+    "foot_length": 0.18501609238050423,
+    "heel_back": 0.06511625976132372
+  },
+  "model_standing_height_m": 1.7979927804862994,
+  "calibration_rmse_cm": {
+    "before": 4.692367139570963,
+    "after": 3.3231074206529905
+  },
+  "ik_marker_error_cm": {
+    "median": 2.613305542721039,
+    "mean": 3.195363399089236
+  },
+  "reprojection_error_px": {
+    "median": 3.3614032359419967,
+    "mean": 4.133385147093903
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 29.110134569949786,
+    "sliding_drift_mean_cm": 10.280093504939149,
+    "contact_ratio": 0.427734375
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 13.096520069700246,
+    "sliding_drift_mean_cm": 0.4815294836905845,
+    "contact_ratio": 0.427734375
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "treadmill_max_root_speed": 0.3,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 138.41028090595228,
+    "pose_loading_s": 0.05478483299884829,
+    "calibration_s": 2.530614292001701,
+    "ik_pass1_s": 1.504694291998021,
+    "ik_pass2_s": 1.796306165997521,
+    "outputs_s": 0.6298535839996475,
+    "total_s": 144.87174923994917
+  }
+}
