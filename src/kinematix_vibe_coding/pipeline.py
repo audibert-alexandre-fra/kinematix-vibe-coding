@@ -86,7 +86,8 @@ def run_pipeline(video: str | Path, out_dir: str | Path, cfg: PipelineConfig | N
     mk = {n: Xc[:, i] for i, n in enumerate(ms.names)}
 
     # 3. étalonnage géométrique initial (taille connue) + repère monde (sol) -------------------
-    dims0, s0 = initial_dimensions(measure_segments(mk, seq.valid), cfg.height)
+    available = {n for i, n in enumerate(ms.names) if W[:, i].max() > 0}
+    dims0, s0 = initial_dimensions(measure_segments(mk, seq.valid, available), cfg.height)
     world = estimate_world_transform(mk, FOOT_MARKERS, seq.intrinsics.K, s0)
     Xw = world.to_world(Xc)
 

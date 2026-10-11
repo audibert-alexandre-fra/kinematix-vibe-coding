@@ -1,0 +1,632 @@
+{
+  "data/gait1/raw-video-cam0.mp4": {
+    "video": "data/gait1/raw-video-cam0.mp4",
+    "backend": "metrabs",
+    "n_frames": 130,
+    "fps": 30.012466716943962,
+    "height_m": 1.8,
+    "data_scale": 1.002222644687936,
+    "dimensions_m": {
+      "ankle_height": 0.07143240429213157,
+      "shank": 0.3777099548335248,
+      "thigh": 0.45299545747215775,
+      "hip_width": 0.20227471150925755,
+      "pelvis_to_lumbar": 0.1020790613820214,
+      "torso": 0.4582094073163896,
+      "shoulder_width": 0.47531550761390456,
+      "shoulder_drop": 0.057600000000000005,
+      "neck_to_eyes": 0.21913324793643538,
+      "eyes_to_top": 0.11829472080449112,
+      "upper_arm": 0.24104767453953693,
+      "forearm": 0.25900592726896327,
+      "hand": 0.08429550810977238,
+      "foot_length": 0.225150713077603,
+      "heel_back": 0.07162723348403474
+    },
+    "model_standing_height_m": 1.7998542540371516,
+    "calibration_rmse_cm": {
+      "before": 2.099629104852052,
+      "after": 0.7088238491967277
+    },
+    "ik_marker_error_cm": {
+      "median": 0.6588989449434288,
+      "mean": 1.1487980279902028
+    },
+    "reprojection_error_px": {
+      "median": 1.6217029424756089,
+      "mean": 2.2006415817705403
+    },
+    "treadmill_belt_velocity_m_s": [
+      0.0,
+      0.0
+    ],
+    "foot_sliding_before": {
+      "sliding_speed_mean_cm_s": 46.63547269311188,
+      "sliding_drift_mean_cm": 10.29159040504071,
+      "contact_ratio": 0.2858974358974359
+    },
+    "foot_sliding_after": {
+      "sliding_speed_mean_cm_s": 26.10114507053109,
+      "sliding_drift_mean_cm": 1.2751694401861589,
+      "contact_ratio": 0.2858974358974359
+    },
+    "contact_config": {
+      "height_threshold": 0.05,
+      "speed_threshold": 0.5,
+      "stance_margin": 0.03,
+      "min_frames": 3,
+      "treadmill_min_speed": 0.2,
+      "treadmill_max_root_speed": 0.3,
+      "weight": 50.0
+    },
+    "timings_s": {
+      "pose_estimation_s": 164.9878101348877,
+      "pose_loading_s": 0.025415624999368447,
+      "calibration_s": 2.2283798339994974,
+      "ik_pass1_s": 0.826123083001221,
+      "ik_pass2_s": 0.6121955830003571,
+      "outputs_s": 1.7029370830005064,
+      "total_s": 170.35744571788928
+    }
+  },
+  "data/gait1/raw-video-cam1.mp4": {
+    "video": "data/gait1/raw-video-cam1.mp4",
+    "backend": "metrabs",
+    "n_frames": 129,
+    "fps": 30.012796153398735,
+    "height_m": 1.8,
+    "data_scale": 0.9975314545158749,
+    "dimensions_m": {
+      "ankle_height": 0.0716925999176813,
+      "shank": 0.373673455936378,
+      "thigh": 0.44779892626415707,
+      "hip_width": 0.19629899577585475,
+      "pelvis_to_lumbar": 0.09966825516491018,
+      "torso": 0.4669550338624815,
+      "shoulder_width": 0.4589836836342786,
+      "shoulder_drop": 0.057600000000000005,
+      "neck_to_eyes": 0.22136180326572258,
+      "eyes_to_top": 0.11868576346097084,
+      "upper_arm": 0.25437112173798104,
+      "forearm": 0.2595530085522736,
+      "hand": 0.08399512780692586,
+      "foot_length": 0.22483695458411887,
+      "heel_back": 0.07153746648761537
+    },
+    "model_standing_height_m": 1.7998358378723014,
+    "calibration_rmse_cm": {
+      "before": 2.1098911190243292,
+      "after": 0.8155614173330479
+    },
+    "ik_marker_error_cm": {
+      "median": 0.8808964572092851,
+      "mean": 1.81619261509008
+    },
+    "reprojection_error_px": {
+      "median": 2.5459866695619113,
+      "mean": 3.8085400638398488
+    },
+    "treadmill_belt_velocity_m_s": [
+      0.0,
+      0.0
+    ],
+    "foot_sliding_before": {
+      "sliding_speed_mean_cm_s": 39.233463506748336,
+      "sliding_drift_mean_cm": 12.629296124040948,
+      "contact_ratio": 0.46511627906976744
+    },
+    "foot_sliding_after": {
+      "sliding_speed_mean_cm_s": 20.576863236529487,
+      "sliding_drift_mean_cm": 2.1467235977573647,
+      "contact_ratio": 0.46511627906976744
+    },
+    "contact_config": {
+      "height_threshold": 0.05,
+      "speed_threshold": 0.5,
+      "stance_margin": 0.03,
+      "min_frames": 3,
+      "treadmill_min_speed": 0.2,
+      "treadmill_max_root_speed": 0.3,
+      "weight": 50.0
+    },
+    "timings_s": {
+      "pose_estimation_s": 136.96079778671265,
+      "pose_loading_s": 0.026020000001153676,
+      "calibration_s": 2.738801749999766,
+      "ik_pass1_s": 0.7937655000005179,
+      "ik_pass2_s": 0.6657418750000943,
+      "outputs_s": 1.6368997919998947,
+      "total_s": 142.79600670371292
+    }
+  },
+  "data/gait1/raw-video-cam2.mp4": {
+    "video": "data/gait1/raw-video-cam2.mp4",
+    "backend": "metrabs",
+    "n_frames": 129,
+    "fps": 29.97142259705862,
+    "height_m": 1.8,
+    "data_scale": 0.998098980055454,
+    "dimensions_m": {
+      "ankle_height": 0.07164017359119493,
+      "shank": 0.3741811606449391,
+      "thigh": 0.4439510202472022,
+      "hip_width": 0.1944963094648188,
+      "pelvis_to_lumbar": 0.10719644459210742,
+      "torso": 0.4561890106671055,
+      "shoulder_width": 0.45811696133015695,
+      "shoulder_drop": 0.057600000000000005,
+      "neck_to_eyes": 0.2275376895947013,
+      "eyes_to_top": 0.11911989318362534,
+      "upper_arm": 0.25224958595170216,
+      "forearm": 0.257736550393794,
+      "hand": 0.08408661514828127,
+      "foot_length": 0.2254416179919494,
+      "heel_back": 0.0716271586302772
+    },
+    "model_standing_height_m": 1.7998153925208755,
+    "calibration_rmse_cm": {
+      "before": 2.1563116300198595,
+      "after": 0.858910245452065
+    },
+    "ik_marker_error_cm": {
+      "median": 0.919553224496724,
+      "mean": 1.5778763769246493
+    },
+    "reprojection_error_px": {
+      "median": 3.198593835850783,
+      "mean": 4.279417994924557
+    },
+    "treadmill_belt_velocity_m_s": [
+      0.0,
+      0.0
+    ],
+    "foot_sliding_before": {
+      "sliding_speed_mean_cm_s": 31.73666897424746,
+      "sliding_drift_mean_cm": 10.829256264001206,
+      "contact_ratio": 0.479328165374677
+    },
+    "foot_sliding_after": {
+      "sliding_speed_mean_cm_s": 14.569368492216142,
+      "sliding_drift_mean_cm": 0.6705797642641308,
+      "contact_ratio": 0.479328165374677
+    },
+    "contact_config": {
+      "height_threshold": 0.05,
+      "speed_threshold": 0.5,
+      "stance_margin": 0.03,
+      "min_frames": 3,
+      "treadmill_min_speed": 0.2,
+      "treadmill_max_root_speed": 0.3,
+      "weight": 50.0
+    },
+    "timings_s": {
+      "pose_estimation_s": 132.88839387893677,
+      "pose_loading_s": 0.054548208998312475,
+      "calibration_s": 2.7099441660011507,
+      "ik_pass1_s": 1.2825617500002409,
+      "ik_pass2_s": 0.8452129999986937,
+      "outputs_s": 1.6031695419987955,
+      "total_s": 139.32928233693565
+    }
+  },
+  "data/gait2/raw-video-cam0old.mp4": {
+    "video": "data/gait2/raw-video-cam0old.mp4",
+    "backend": "metrabs",
+    "n_frames": 305,
+    "fps": 29.97002997002997,
+    "height_m": 1.65,
+    "data_scale": 0.9543674763159556,
+    "dimensions_m": {
+      "ankle_height": 0.06577615141053673,
+      "shank": 0.3499589794445127,
+      "thigh": 0.43817894286771114,
+      "hip_width": 0.17000182028287208,
+      "pelvis_to_lumbar": 0.09347971002319222,
+      "torso": 0.3894081397087691,
+      "shoulder_width": 0.36960781666849535,
+      "shoulder_drop": 0.05279999999999998,
+      "neck_to_eyes": 0.20478800693132462,
+      "eyes_to_top": 0.10826093240103518,
+      "upper_arm": 0.24292333196349522,
+      "forearm": 0.22841466939216276,
+      "hand": 0.07817514587548832,
+      "foot_length": 0.19970259002816448,
+      "heel_back": 0.06540741757242903
+    },
+    "model_standing_height_m": 1.6498508627870816,
+    "calibration_rmse_cm": {
+      "before": 2.02787538933227,
+      "after": 0.839677419731338
+    },
+    "ik_marker_error_cm": {
+      "median": 0.9940678137817418,
+      "mean": 1.4097518133720837
+    },
+    "reprojection_error_px": {
+      "median": 5.067002517834874,
+      "mean": 7.16859609051527
+    },
+    "treadmill_belt_velocity_m_s": [
+      -1.1197273765162319,
+      0.64156005968184
+    ],
+    "foot_sliding_before": {
+      "sliding_speed_mean_cm_s": 24.145296450702595,
+      "sliding_drift_mean_cm": 6.957946913270111,
+      "contact_ratio": 0.3644808743169399
+    },
+    "foot_sliding_after": {
+      "sliding_speed_mean_cm_s": 7.804481234044555,
+      "sliding_drift_mean_cm": 0.9817488376050095,
+      "contact_ratio": 0.3644808743169399
+    },
+    "contact_config": {
+      "height_threshold": 0.05,
+      "speed_threshold": 0.5,
+      "stance_margin": 0.03,
+      "min_frames": 3,
+      "treadmill_min_speed": 0.2,
+      "treadmill_max_root_speed": 0.3,
+      "weight": 50.0
+    },
+    "timings_s": {
+      "pose_estimation_s": 332.1326410770416,
+      "pose_loading_s": 0.04330720800135168,
+      "calibration_s": 2.7027030830013246,
+      "ik_pass1_s": 3.1535992909994093,
+      "ik_pass2_s": 2.519233125000028,
+      "outputs_s": 3.890438833999724,
+      "total_s": 344.3986154100421
+    }
+  },
+  "data/jumpingjack/raw-video-cam2.mp4": {
+    "video": "data/jumpingjack/raw-video-cam2.mp4",
+    "backend": "metrabs",
+    "n_frames": 42,
+    "fps": 29.49852507374631,
+    "height_m": 1.8,
+    "data_scale": 1.0042061742747437,
+    "dimensions_m": {
+      "ankle_height": 0.07166672460986477,
+      "shank": 0.3721034461210669,
+      "thigh": 0.45325813352640454,
+      "hip_width": 0.1919476115787063,
+      "pelvis_to_lumbar": 0.10596126550336103,
+      "torso": 0.4473971079759674,
+      "shoulder_width": 0.4210617059282838,
+      "shoulder_drop": 0.04567593877889017,
+      "neck_to_eyes": 0.2298265719188957,
+      "eyes_to_top": 0.11958045279742158,
+      "upper_arm": 0.2359549973527123,
+      "forearm": 0.2587511664182519,
+      "hand": 0.08435963060488282,
+      "foot_length": 0.21930533206301683,
+      "heel_back": 0.07171389287630711
+    },
+    "model_standing_height_m": 1.7997937024529818,
+    "calibration_rmse_cm": {
+      "before": 1.946316353262625,
+      "after": 1.0809641617101693
+    },
+    "ik_marker_error_cm": {
+      "median": 1.1949057620710184,
+      "mean": 1.4229363808508744
+    },
+    "reprojection_error_px": {
+      "median": 2.868701904071239,
+      "mean": 3.167427927454612
+    },
+    "treadmill_belt_velocity_m_s": [
+      0.0,
+      0.0
+    ],
+    "foot_sliding_before": {
+      "sliding_speed_mean_cm_s": 32.89157069925155,
+      "sliding_drift_mean_cm": 3.3620961957371387,
+      "contact_ratio": 0.3134920634920635
+    },
+    "foot_sliding_after": {
+      "sliding_speed_mean_cm_s": 12.537427445110314,
+      "sliding_drift_mean_cm": 0.24334861087016088,
+      "contact_ratio": 0.3134920634920635
+    },
+    "contact_config": {
+      "height_threshold": 0.05,
+      "speed_threshold": 0.5,
+      "stance_margin": 0.03,
+      "min_frames": 3,
+      "treadmill_min_speed": 0.2,
+      "treadmill_max_root_speed": 0.3,
+      "weight": 50.0
+    },
+    "timings_s": {
+      "pose_estimation_s": 44.1130907535553,
+      "pose_loading_s": 0.014676250000775326,
+      "calibration_s": 1.8259085410008993,
+      "ik_pass1_s": 0.19300237500101503,
+      "ik_pass2_s": 0.18065008300072805,
+      "outputs_s": 0.21225625000079162,
+      "total_s": 46.52490800255873
+    }
+  },
+  "data/random1/la-derniere-danse-cam1.mp4": {
+    "video": "data/random1/la-derniere-danse-cam1.mp4",
+    "backend": "metrabs",
+    "n_frames": 256,
+    "fps": 26.78,
+    "height_m": 1.8,
+    "data_scale": 1.0051224359379192,
+    "dimensions_m": {
+      "ankle_height": 0.071504194065734,
+      "shank": 0.38052692380297004,
+      "thigh": 0.45027212532443533,
+      "hip_width": 0.1955634001898933,
+      "pelvis_to_lumbar": 0.10578699568480768,
+      "torso": 0.4589667280851886,
+      "shoulder_width": 0.4744175058885417,
+      "shoulder_drop": 0.05691809107025836,
+      "neck_to_eyes": 0.21518300779451505,
+      "eyes_to_top": 0.11764488339068063,
+      "upper_arm": 0.24867293333064583,
+      "forearm": 0.26654513243608285,
+      "hand": 0.08446952101600565,
+      "foot_length": 0.22749009451244878,
+      "heel_back": 0.07158560519399487
+    },
+    "model_standing_height_m": 1.7998848581483313,
+    "calibration_rmse_cm": {
+      "before": 1.9242914807053857,
+      "after": 0.7161394448192457
+    },
+    "ik_marker_error_cm": {
+      "median": 1.057285436399817,
+      "mean": 2.052900261192546
+    },
+    "reprojection_error_px": {
+      "median": 1.6509861859957553,
+      "mean": 2.4140290375775844
+    },
+    "treadmill_belt_velocity_m_s": [
+      0.0,
+      0.0
+    ],
+    "foot_sliding_before": {
+      "sliding_speed_mean_cm_s": 20.37963998063714,
+      "sliding_drift_mean_cm": 16.876869827458897,
+      "contact_ratio": 0.7063802083333334
+    },
+    "foot_sliding_after": {
+      "sliding_speed_mean_cm_s": 8.082421858630315,
+      "sliding_drift_mean_cm": 1.0359938422220258,
+      "contact_ratio": 0.7063802083333334
+    },
+    "contact_config": {
+      "height_threshold": 0.05,
+      "speed_threshold": 0.5,
+      "stance_margin": 0.03,
+      "min_frames": 3,
+      "treadmill_min_speed": 0.2,
+      "treadmill_max_root_speed": 0.3,
+      "weight": 50.0
+    },
+    "timings_s": {
+      "pose_estimation_s": 266.1437392234802,
+      "pose_loading_s": 0.024556833999668015,
+      "calibration_s": 2.4848006249994796,
+      "ik_pass1_s": 0.9919423329993151,
+      "ik_pass2_s": 0.650796874999287,
+      "outputs_s": 0.6400310000008176,
+      "total_s": 270.9113100564791
+    }
+  },
+  "data/squat1/raw-video-cam0.mp4": {
+    "video": "data/squat1/raw-video-cam0.mp4",
+    "backend": "metrabs",
+    "n_frames": 172,
+    "fps": 24.983779910329535,
+    "height_m": 1.8,
+    "data_scale": 1.048449843062195,
+    "dimensions_m": {
+      "ankle_height": 0.07041352836923093,
+      "shank": 0.3603879544585163,
+      "thigh": 0.45697615611424064,
+      "hip_width": 0.20545988889473613,
+      "pelvis_to_lumbar": 0.0878730744311225,
+      "torso": 0.48455032532267084,
+      "shoulder_width": 0.4445182590045306,
+      "shoulder_drop": 0.046155027943149754,
+      "neck_to_eyes": 0.22156697567819048,
+      "eyes_to_top": 0.11809561648660007,
+      "upper_arm": 0.22992563869514035,
+      "forearm": 0.24978544209082237,
+      "hand": 0.08481149467815334,
+      "foot_length": 0.21703964958936806,
+      "heel_back": 0.0730146956279594
+    },
+    "model_standing_height_m": 1.7998636308605716,
+    "calibration_rmse_cm": {
+      "before": 1.9755642683074732,
+      "after": 0.9407521511953336
+    },
+    "ik_marker_error_cm": {
+      "median": 1.0098857339738943,
+      "mean": 1.713181297287
+    },
+    "reprojection_error_px": {
+      "median": 1.8659466649135619,
+      "mean": 2.646265095056122
+    },
+    "treadmill_belt_velocity_m_s": [
+      0.0,
+      0.0
+    ],
+    "foot_sliding_before": {
+      "sliding_speed_mean_cm_s": 31.643694248978722,
+      "sliding_drift_mean_cm": 14.458572213218293,
+      "contact_ratio": 0.33042635658914726
+    },
+    "foot_sliding_after": {
+      "sliding_speed_mean_cm_s": 1.6120458464786178,
+      "sliding_drift_mean_cm": 1.0319532696596772,
+      "contact_ratio": 0.33042635658914726
+    },
+    "contact_config": {
+      "height_threshold": 0.05,
+      "speed_threshold": 0.5,
+      "stance_margin": 0.03,
+      "min_frames": 3,
+      "treadmill_min_speed": 0.2,
+      "treadmill_max_root_speed": 0.3,
+      "weight": 50.0
+    },
+    "timings_s": {
+      "pose_estimation_s": 180.01643419265747,
+      "pose_loading_s": 0.021652542000083486,
+      "calibration_s": 1.576844749999509,
+      "ik_pass1_s": 0.6071571669999685,
+      "ik_pass2_s": 0.7548409999999421,
+      "outputs_s": 0.6112511659994198,
+      "total_s": 183.5665282756563
+    }
+  },
+  "data/squat1/raw-video-cam1.mp4": {
+    "video": "data/squat1/raw-video-cam1.mp4",
+    "backend": "metrabs",
+    "n_frames": 207,
+    "fps": 30.012613997187223,
+    "height_m": 1.8,
+    "data_scale": 1.0306715068415522,
+    "dimensions_m": {
+      "ankle_height": 0.07050438020100927,
+      "shank": 0.3706759480746775,
+      "thigh": 0.4668096376617504,
+      "hip_width": 0.20376352561205083,
+      "pelvis_to_lumbar": 0.09021615432628029,
+      "torso": 0.46713076172653584,
+      "shoulder_width": 0.4559406932705749,
+      "shoulder_drop": 0.0449600293647937,
+      "neck_to_eyes": 0.2171078210076431,
+      "eyes_to_top": 0.11744936318021561,
+      "upper_arm": 0.22641563080769966,
+      "forearm": 0.25254797657319356,
+      "hand": 0.08378697094389204,
+      "foot_length": 0.22151072483661047,
+      "heel_back": 0.07298412172596432
+    },
+    "model_standing_height_m": 1.799894066178112,
+    "calibration_rmse_cm": {
+      "before": 1.8754785003718775,
+      "after": 0.7806634318418354
+    },
+    "ik_marker_error_cm": {
+      "median": 1.0086611675703727,
+      "mean": 1.4418758259089586
+    },
+    "reprojection_error_px": {
+      "median": 1.5023172955193604,
+      "mean": 2.0495426109199713
+    },
+    "treadmill_belt_velocity_m_s": [
+      0.0,
+      0.0
+    ],
+    "foot_sliding_before": {
+      "sliding_speed_mean_cm_s": 25.792561708802825,
+      "sliding_drift_mean_cm": 3.723393683265699,
+      "contact_ratio": 0.38003220611916266
+    },
+    "foot_sliding_after": {
+      "sliding_speed_mean_cm_s": 9.975967093653965,
+      "sliding_drift_mean_cm": 0.3710479007723495,
+      "contact_ratio": 0.38003220611916266
+    },
+    "contact_config": {
+      "height_threshold": 0.05,
+      "speed_threshold": 0.5,
+      "stance_margin": 0.03,
+      "min_frames": 3,
+      "treadmill_min_speed": 0.2,
+      "treadmill_max_root_speed": 0.3,
+      "weight": 50.0
+    },
+    "timings_s": {
+      "pose_estimation_s": 216.76709985733032,
+      "pose_loading_s": 0.02357987499999581,
+      "calibration_s": 1.5801374579987169,
+      "ik_pass1_s": 0.7473004580006091,
+      "ik_pass2_s": 0.7461905839991232,
+      "outputs_s": 0.6373026670007675,
+      "total_s": 220.47803102432954
+    }
+  },
+  "data/squat1/raw-video-cam2.mp4": {
+    "video": "data/squat1/raw-video-cam2.mp4",
+    "backend": "metrabs",
+    "n_frames": 207,
+    "fps": 30.01841709647948,
+    "height_m": 1.8,
+    "data_scale": 1.0175936731402586,
+    "dimensions_m": {
+      "ankle_height": 0.07086182903531209,
+      "shank": 0.3659699899034394,
+      "thigh": 0.4573950237892971,
+      "hip_width": 0.19682003889972738,
+      "pelvis_to_lumbar": 0.08314595077006115,
+      "torso": 0.4837096355498835,
+      "shoulder_width": 0.4502647625242578,
+      "shoulder_drop": 0.0458992964933776,
+      "neck_to_eyes": 0.22076178749771005,
+      "eyes_to_top": 0.11802284164793123,
+      "upper_arm": 0.23044334982105194,
+      "forearm": 0.24891246782641663,
+      "hand": 0.08476576028918367,
+      "foot_length": 0.21265831889873316,
+      "heel_back": 0.07265120831593468
+    },
+    "model_standing_height_m": 1.7998670581936345,
+    "calibration_rmse_cm": {
+      "before": 2.100588659404175,
+      "after": 0.897582478080933
+    },
+    "ik_marker_error_cm": {
+      "median": 0.8892732362987205,
+      "mean": 1.3055550239881981
+    },
+    "reprojection_error_px": {
+      "median": 1.7732991457683709,
+      "mean": 2.2707482993199615
+    },
+    "treadmill_belt_velocity_m_s": [
+      0.0,
+      0.0
+    ],
+    "foot_sliding_before": {
+      "sliding_speed_mean_cm_s": 22.43561501685507,
+      "sliding_drift_mean_cm": 14.828993991660994,
+      "contact_ratio": 0.3333333333333333
+    },
+    "foot_sliding_after": {
+      "sliding_speed_mean_cm_s": 0.641213515113678,
+      "sliding_drift_mean_cm": 0.49946447983754444,
+      "contact_ratio": 0.3333333333333333
+    },
+    "contact_config": {
+      "height_threshold": 0.05,
+      "speed_threshold": 0.5,
+      "stance_margin": 0.03,
+      "min_frames": 3,
+      "treadmill_min_speed": 0.2,
+      "treadmill_max_root_speed": 0.3,
+      "weight": 50.0
+    },
+    "timings_s": {
+      "pose_estimation_s": 220.38512682914734,
+      "pose_loading_s": 0.028789542000595247,
+      "calibration_s": 1.7264504579998174,
+      "ik_pass1_s": 0.468488749998869,
+      "ik_pass2_s": 0.5883483749985317,
+      "outputs_s": 0.6487186659996951,
+      "total_s": 223.81713307814425
+    }
+  }
+}

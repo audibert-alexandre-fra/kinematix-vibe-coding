@@ -1,0 +1,70 @@
+{
+  "video": "data/random1/la-derniere-danse-cam1.mp4",
+  "backend": "metrabs",
+  "n_frames": 256,
+  "fps": 26.78,
+  "height_m": 1.8,
+  "data_scale": 1.0051224359379192,
+  "dimensions_m": {
+    "ankle_height": 0.071504194065734,
+    "shank": 0.38052692380297004,
+    "thigh": 0.45027212532443533,
+    "hip_width": 0.1955634001898933,
+    "pelvis_to_lumbar": 0.10578699568480768,
+    "torso": 0.4589667280851886,
+    "shoulder_width": 0.4744175058885417,
+    "shoulder_drop": 0.05691809107025836,
+    "neck_to_eyes": 0.21518300779451505,
+    "eyes_to_top": 0.11764488339068063,
+    "upper_arm": 0.24867293333064583,
+    "forearm": 0.26654513243608285,
+    "hand": 0.08446952101600565,
+    "foot_length": 0.22749009451244878,
+    "heel_back": 0.07158560519399487
+  },
+  "model_standing_height_m": 1.7998848581483313,
+  "calibration_rmse_cm": {
+    "before": 1.9242914807053857,
+    "after": 0.7161394448192457
+  },
+  "ik_marker_error_cm": {
+    "median": 1.057285436399817,
+    "mean": 2.052900261192546
+  },
+  "reprojection_error_px": {
+    "median": 1.6509861859957553,
+    "mean": 2.4140290375775844
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 20.37963998063714,
+    "sliding_drift_mean_cm": 16.876869827458897,
+    "contact_ratio": 0.7063802083333334
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 8.082421858630315,
+    "sliding_drift_mean_cm": 1.0359938422220258,
+    "contact_ratio": 0.7063802083333334
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "treadmill_max_root_speed": 0.3,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 266.1437392234802,
+    "pose_loading_s": 0.024556833999668015,
+    "calibration_s": 2.4848006249994796,
+    "ik_pass1_s": 0.9919423329993151,
+    "ik_pass2_s": 0.650796874999287,
+    "outputs_s": 0.6400310000008176,
+    "total_s": 270.9113100564791
+  }
+}

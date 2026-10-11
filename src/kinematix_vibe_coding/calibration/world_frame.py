@@ -87,11 +87,18 @@ def fit_ground(
         c = P.mean(0)
         C = (P - c).T @ (P - c) / sigma_m**2
 
-        def cost(n_vec, C=C):
-            u = _unit(n_vec)
+        # paramétrage dans le plan tangent en n (2 ddl) : la normale reste unitaire
+        e1 = _unit(np.cross(n, [1.0, 0.0, 0.0] if abs(n[0]) < 0.9 else [0.0, 1.0, 0.0]))
+        e2 = np.cross(n, e1)
+
+        def normal(ab, n=n, e1=e1, e2=e2):
+            return _unit(n + ab[0] * e1 + ab[1] * e2)
+
+        def cost(ab, C=C):
+            u = normal(ab)
             return u @ C @ u + np.sum((u - n_prior) ** 2) / sig_ang**2
 
-        n = _unit(minimize(cost, n, method="Nelder-Mead", options={"xatol": 1e-6, "fatol": 1e-8}).x)
+        n = normal(minimize(cost, np.zeros(2), method="Nelder-Mead", options={"xatol": 1e-7, "fatol": 1e-9}).x)
         d = float(np.median(P @ n))
     return n, d
 

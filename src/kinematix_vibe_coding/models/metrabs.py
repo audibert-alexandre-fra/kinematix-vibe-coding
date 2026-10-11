@@ -18,8 +18,10 @@ from ..video import default_intrinsics, read_video_info
 from .base import PoseSequence
 
 # MHR70 -> (point bml_movi_87, confiance)
-MHR70_FROM_MOVI: dict[str, tuple[str, float]] = {"neck": ("Neck", 1.0), "nose": ("Head", 0.0),
-                                                 "left_eye": ("Head", 0.3), "right_eye": ("Head", 0.3)}
+# pas d'équivalent exact des yeux dans bml_movi_87 : "Head" sert de repère de tête (faible poids) ;
+# le segment cou -> yeux mal défini est borné par l'a priori anthropométrique (calibration/scaling.py)
+MHR70_FROM_MOVI: dict[str, tuple[str, float]] = {"neck": ("Neck", 1.0), "left_eye": ("Head", 0.3),
+                                                 "right_eye": ("Head", 0.3)}
 for _s, _m in (("left", "L"), ("right", "R")):
     _l = _m.lower()
     MHR70_FROM_MOVI.update({

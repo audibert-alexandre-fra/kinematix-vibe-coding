@@ -91,3 +91,32 @@ def test_world_transform_puts_feet_on_ground(truth):
     assert up_err < 5
     feet = W[:, [names.index(f) for f in FOOT_MARKERS], 2]
     assert np.percentile(feet.min(1), 10) == pytest.approx(0.0, abs=0.05)
+
+
+def test_clamp_to_prior_rejects_outlier_segment():
+    from kinematix_vibe_coding.calibration.scaling import clamp_to_prior
+
+    prior = BodyDimensions.from_height(1.8)
+    seg = {"thigh": prior.thigh * 0.9, "shank": prior.shank * 0.9, "trunk": (prior.pelvis_to_lumbar + prior.torso) * 0.9,
+           "neck_to_eyes": prior.neck_to_eyes * 3.0}  # keypoint "yeux" mal placé
+    out = clamp_to_prior(seg, 1.8)
+    assert out["thigh"] == pytest.approx(seg["thigh"])
+    assert out["neck_to_eyes"] == pytest.approx(prior.neck_to_eyes * 0.9 * 1.3)
+
+
+def test_missing_keypoints_use_anthropometry(truth):
+    hum, names, X = truth
+    m = {n: X[:, i] for i, n in enumerate(names)}
+    avail = set(names) - {"left_eye", "right_eye"}
+    seg = measure_segments(m, np.ones(len(X), bool), avail)
+    assert "neck_to_eyes" not in seg and "thigh" in seg
+    d, s = initial_dimensions(seg, 1.85)
+    assert d.standing_height() == pytest.approx(1.85, abs=1e-6)
+
+
+def test_fit_ground_returns_unit_normal_on_degenerate_data():
+    # pieds quasi immobiles au même endroit (squat, jumping jack court) : plan mal conditionné
+    rng = np.random.default_rng(0)
+    pts = np.array([0.1, 0.7, 4.4]) + rng.normal(scale=0.005, size=(42, 6, 3))
+    n, _ = fit_ground(pts, np.array([0.0, -0.99, -0.15]) / np.linalg.norm([0.0, -0.99, -0.15]))
+    assert np.linalg.norm(n) == pytest.approx(1.0, abs=1e-9)
