@@ -69,7 +69,7 @@ uv run kinematix batch data --out output  # toutes les vidéos
         → `rapport/rapport_InstantHMR.txt`.
 - [ ] 5. SAM3DFast (SAM 3D Body) : installation, poids (HF gated), temps
         → `rapport/rapport_SAM3DFast.txt`.
-- [ ] 6. `video/` : lecteur vidéo, métadonnées, intrinsèques par défaut + tests.
+- [x] 6. `video/` : lecteur vidéo, métadonnées, intrinsèques par défaut + tests.
 - [ ] 7. `models/` : interface `PoseBackend` + `PoseSequence`, détecteur personne (licence commerciale),
         backend InstantHMR (+ SAM3D si dispo), suivi de la personne principale + tests.
 - [ ] 8. `utils/` : définitions squelettes (MHR70), filtres temporels, rendu overlay + tests.
