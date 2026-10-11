@@ -14,7 +14,7 @@ vidéo ──► video/ (lecture, métadonnées, intrinsèques par défaut)
       ──► inverse_kinematix/ (IK MuJoCo frame par frame + contraintes de contact
                               anti-glissement des pieds + lissage)
       ──► utils/ (squelettes, filtres, rendu overlay, métriques)
-      ──► output/<sous-dossier>/<video>/ (qpos, angles .csv, overlay .mp4, timings)
+      ──► output/<backend>/<sous-dossier>/<video>/ (qpos, angles .csv, overlay .mp4, timings)
 ```
 
 ## Contraintes
@@ -40,7 +40,7 @@ src/kinematix_vibe_coding/         (nom avec "_" : un package Python ne peut pas
     cli.py                         point d'entrée `uv run kinematix ...`
 tests/                             tests unitaires (rapides, sans poids) + tests `slow`
 rapport/                           rapports texte
-output/                            résultats sur data/
+output/<backend>/                  résultats sur data/ par modèle de pose (versionnés)
 ```
 
 ## Commandes
@@ -49,8 +49,10 @@ uv sync                                   # installer
 uv run pytest                             # tests rapides (CI)
 uv run pytest -m slow                     # tests avec poids/vidéos réelles
 uv run ruff check .                       # lint
-uv run kinematix run data/squat1/raw-video-cam0.mp4 --height 1.80 --out output/
-uv run kinematix batch data --out output  # toutes les vidéos
+uv run kinematix run data/squat1/raw-video-cam0.mp4 --height 1.80 --out output
+uv run kinematix batch data --out output  # toutes les vidéos -> output/<backend>/...
+uv run kinematix batch data --backend metrabs   # référence (cache MeTRAbs : tools/run_metrabs.py)
+uv run kinematix evaluate output          # cohérence multi-vues + output/comparaison_modeles.md
 ```
 
 ## Conventions
@@ -58,6 +60,9 @@ uv run kinematix batch data --out output  # toutes les vidéos
 - Chaque backend de pose renvoie une `PoseSequence` (keypoints 3D caméra, 2D pixels, confiances,
   noms de joints) → indépendant du modèle en aval.
 - Les poids des modèles sont téléchargés dans `weights/` (ignoré par git).
+- Dépôts tiers (MonocularBiomechanics, InstantHMR, SAM3DFast) clonés dans `third_party/` (ignoré).
+- Paramètres par défaut réglés par cohérence multi-vues : reprojection 2D poids 10, filtre 6 Hz,
+  poids de contact 50 (compromis anti-glissement / précision), tapis roulant si bassin immobile.
 
 ## TODO (mise à jour à chaque étape terminée)
 - [x] 0. Exploration : dépôts de référence, licences, vidéos de `data/`, machine (M3 Pro, pas de CUDA).
