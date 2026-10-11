@@ -74,9 +74,9 @@ uv run kinematix batch data --out output  # toutes les vidéos
         backend InstantHMR (+ SAM3D si dispo), suivi de la personne principale + tests.
 - [~] 8. `utils/` : définitions squelettes (MHR70), filtres temporels, rendu overlay + tests.
 - [x] 9. Modèle humain MuJoCo paramétrique (généré par MjSpec, licence libre) avec sites marqueurs.
-- [ ] 10. `calibration/` : marqueurs virtuels depuis keypoints, mise à l'échelle par taille connue,
+- [x] 10. `calibration/` : marqueurs virtuels depuis keypoints, mise à l'échelle par taille connue,
         estimation du plan du sol, calibration automatique des segments par optimisation MuJoCo + tests.
-- [ ] 11. `inverse_kinematix/` : IK MuJoCo (Levenberg-Marquardt, limites articulaires, warm-start),
+- [x] 11. `inverse_kinematix/` : IK MuJoCo (Levenberg-Marquardt, limites articulaires, warm-start),
         détection des contacts pieds, contraintes anti-glissement + tests (glissement ≈ 0).
 - [ ] 12. CLI `kinematix run/batch` : pipeline complet, export qpos/angles CSV/overlay, timings (< 5 min).
 - [ ] 13. Évaluation multi-vues : comparaison des angles articulaires entre caméras d'un même

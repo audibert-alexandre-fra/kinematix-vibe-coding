@@ -1,0 +1,9 @@
+{
+  "_comment": "Taille (m) du sujet de chaque vidéo. Clé = sous-dossier ou chemin relatif. Valeurs PAR DÉFAUT (tailles réelles inconnues) : à corriger.",
+  "default": 1.75,
+  "gait1": 1.80,
+  "squat1": 1.80,
+  "jumpingjack": 1.80,
+  "random1": 1.80,
+  "gait2": 1.65
+}
