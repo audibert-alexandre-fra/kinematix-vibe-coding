@@ -53,6 +53,10 @@ uv run kinematix run data/squat1/raw-video-cam0.mp4 --height 1.80 --out output
 uv run kinematix batch data --out output  # toutes les vidéos -> output/<backend>/...
 uv run kinematix batch data --backend metrabs   # référence (cache MeTRAbs : tools/run_metrabs.py)
 uv run kinematix evaluate output          # cohérence multi-vues + output/comparaison_modeles.md
+# autres modèles (environnements séparés, puis --backend mediapipe | rtmw3d | nlf) :
+third_party/envs/mediapipe/.venv/bin/python tools/run_mediapipe.py data   # -> weights/mediapipe_cache
+third_party/envs/mmpose/.venv/bin/python tools/run_rtmw3d.py data         # -> weights/rtmw3d_cache
+uv run --extra detector python tools/run_nlf.py data                      # -> weights/nlf_cache
 ```
 
 ## Conventions
@@ -90,3 +94,7 @@ uv run kinematix evaluate output          # cohérence multi-vues + output/compa
 - [x] 15. Projection du squelette sur toutes les vidéos (overlays) et livraison.
 - [x] 16. Backend MeTRAbs (référence non commerciale) + sorties séparées par modèle + comparaison.
 - [ ] 17. (à faire) SAM 3D Body sur GPU NVIDIA (poids HF à accès restreint) ; tailles réelles des sujets.
+- [x] 18. Backends supplémentaires relus depuis un cache (`models/cached.py`, `tools/run_<modèle>.py`,
+        environnements séparés dans `third_party/envs/`) : MediaPipe Pose (Apache-2.0, commercial),
+        MMPose RTMW3D-L (3D corps entier), NLF-L (Neural Localizer Fields, non commercial) + tests.
+- [ ] 19. Sorties `output/mediapipe`, `output/rtmw3d`, `output/nlf` + comparaison des 5 modèles + rapports.

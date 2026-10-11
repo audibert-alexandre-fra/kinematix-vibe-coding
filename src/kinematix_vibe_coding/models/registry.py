@@ -25,7 +25,20 @@ def _metrabs(**kw) -> PoseBackend:
     return MetrabsBackend(**kw)
 
 
-_BACKENDS: dict[str, Callable[..., PoseBackend]] = {"instanthmr": _instanthmr, "sam3d": _sam3d, "metrabs": _metrabs}
+def _cached(name: str) -> Callable[..., PoseBackend]:
+    def factory(**kw) -> PoseBackend:
+        from .cached import CachedBackend
+
+        return CachedBackend(name, **kw)
+
+    return factory
+
+
+_BACKENDS: dict[str, Callable[..., PoseBackend]] = {
+    "instanthmr": _instanthmr, "sam3d": _sam3d, "metrabs": _metrabs,
+    # modèles exécutés dans un environnement séparé (tools/run_<nom>.py) puis relus depuis le cache
+    "mediapipe": _cached("mediapipe"), "rtmw3d": _cached("rtmw3d"), "nlf": _cached("nlf"),
+}
 
 
 def register_backend(name: str, factory: Callable[..., PoseBackend]) -> None:

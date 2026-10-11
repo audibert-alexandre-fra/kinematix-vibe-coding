@@ -79,7 +79,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "run":
         video = Path(args.video)
-        run_pipeline(video, Path(args.out) / args.backend / video.stem, cfg(args.height))
+        run_pipeline(video, Path(args.out) / args.backend / video.parent.name / video.stem, cfg(args.height))
         return 0
 
     data_root = Path(args.data)
