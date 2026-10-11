@@ -85,7 +85,6 @@ def calibrate(
 
     names = BodyDimensions.names()
     prior = BodyDimensions.from_height(height).as_array()
-    dims0 = hum.dims.as_array()
     sig_dim = np.array([TIGHT_PRIOR.get(n, 0.2) for n in names]) * prior
     sig_off = np.array([0.04 if any(k in n for k in LOOSE_OFFSET) else 0.02 for n in marker_names])
     pairs = _mirror_pairs(marker_names)
