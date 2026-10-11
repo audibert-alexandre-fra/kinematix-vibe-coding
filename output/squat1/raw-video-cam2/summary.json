@@ -1,0 +1,69 @@
+{
+  "video": "data/squat1/raw-video-cam2.mp4",
+  "backend": "instanthmr",
+  "n_frames": 207,
+  "fps": 30.01841709647948,
+  "height_m": 1.8,
+  "data_scale": 1.0189623622591601,
+  "dimensions_m": {
+    "ankle_height": 0.07052352390966557,
+    "shank": 0.3975444184522824,
+    "thigh": 0.4248047978684848,
+    "hip_width": 0.17471762387389,
+    "pelvis_to_lumbar": 0.11194266018433173,
+    "torso": 0.4755583922716945,
+    "shoulder_width": 0.36173092480219143,
+    "shoulder_drop": 0.05554357241506898,
+    "neck_to_eyes": 0.20197380205791243,
+    "eyes_to_top": 0.11754210381113359,
+    "upper_arm": 0.28312405522693085,
+    "forearm": 0.25570959256365533,
+    "hand": 0.08286084866994843,
+    "foot_length": 0.23871033657182933,
+    "heel_back": 0.07108878694703286
+  },
+  "model_standing_height_m": 1.7998896985555048,
+  "calibration_rmse_cm": {
+    "before": 1.6880974691099642,
+    "after": 0.5898211330778033
+  },
+  "ik_marker_error_cm": {
+    "median": 0.7065266242650424,
+    "mean": 1.5490151201030526
+  },
+  "reprojection_error_px": {
+    "median": 9.271889391962024,
+    "mean": 9.901425410500135
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 29.301026939534875,
+    "sliding_drift_mean_cm": 5.464434709066291,
+    "contact_ratio": 0.3679549114331723
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 10.496303713825741,
+    "sliding_drift_mean_cm": 1.0421583674262496,
+    "contact_ratio": 0.3679549114331723
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 31.878144250999867,
+    "pose_loading_s": 0.0044731250000040745,
+    "calibration_s": 1.6374257090001265,
+    "ik_pass1_s": 1.05770370800019,
+    "ik_pass2_s": 1.844282457999725,
+    "outputs_s": 0.572537416999694,
+    "total_s": 36.9900935429996
+  }
+}

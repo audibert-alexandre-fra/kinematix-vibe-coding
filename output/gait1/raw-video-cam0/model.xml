@@ -1,0 +1,129 @@
+<mujoco model="kinematix_humanoid">
+  <compiler angle="radian"/>
+
+  <worldbody>
+    <geom name="floor" size="5 5 0.1" type="plane" contype="0" conaffinity="0" rgba="0.8 0.8 0.8 1"/>
+    <body name="pelvis" pos="0 0 0.89486">
+      <joint name="root" type="free"/>
+      <geom size="0.06 0.0889995" quat="0.707107 0.707107 0 0" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+      <site name="pelvis_center" size="0.012" rgba="1 0.2 0.2 1"/>
+      <body name="torso" pos="0 0 0.11771">
+        <joint name="lumbar_flexion" range="-0.610865 1.65806" axis="0 1 0" limited="true"/>
+        <joint name="lumbar_bending" range="-0.698132 0.698132" axis="1 0 0" limited="true"/>
+        <joint name="lumbar_rotation" range="-0.785398 0.785398" limited="true"/>
+        <geom size="0.09 0.23692" pos="0 0 0.23692" quat="0 1 0 0" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+        <body name="head" pos="0 0 0.47384">
+          <joint name="neck_flexion" range="-1.0472 1.22173" axis="0 1 0" limited="true"/>
+          <joint name="neck_bending" range="-0.785398 0.785398" axis="1 0 0" limited="true"/>
+          <joint name="neck_rotation" range="-1.39626 1.39626" limited="true"/>
+          <geom size="0.1" pos="0.02 0 0.19671" contype="0" conaffinity="0" rgba="0.95 0.8 0.7 1" mass="1"/>
+          <site name="neck" size="0.012" rgba="1 0.2 0.2 1"/>
+          <site name="nose" size="0.012" pos="0.09 0 0.16671" rgba="1 0.2 0.2 1"/>
+          <site name="head_top" size="0.012" pos="0 0 0.313514" rgba="1 0.2 0.2 1"/>
+          <site name="right_eye" size="0.012" pos="0.07 -0.032 0.19671" rgba="1 0.2 0.2 1"/>
+          <site name="right_ear" size="0.012" pos="-0.01 -0.075 0.18671" rgba="1 0.2 0.2 1"/>
+          <site name="left_eye" size="0.012" pos="0.07 0.032 0.19671" rgba="1 0.2 0.2 1"/>
+          <site name="left_ear" size="0.012" pos="-0.01 0.075 0.18671" rgba="1 0.2 0.2 1"/>
+        </body>
+        <body name="clavicle_r" pos="0 0 0.47384">
+          <joint name="clavicle_elevation_r" range="-0.174533 0.610865" axis="-1 0 0" limited="true"/>
+          <joint name="clavicle_protraction_r" range="-0.349066 0.436332" axis="0 0 -1" limited="true"/>
+          <geom size="0.03 0.0969709" pos="0 -0.0943483 -0.0224001" quat="0.784537 -0.620081 0 0" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+          <site name="right_acromion" size="0.012" pos="0 -0.198697 0.02" rgba="1 0.2 0.2 1"/>
+          <body name="upperarm_r" pos="0 -0.188697 -0.0448002">
+            <joint name="shoulder_r" type="ball"/>
+            <geom size="0.04 0.143192" pos="0 0 -0.143192" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+            <site name="right_shoulder" size="0.012" rgba="1 0.2 0.2 1"/>
+            <body name="forearm_r" pos="0 0 -0.286383">
+              <joint name="elbow_flexion_r" range="-0.0872665 2.70526" axis="0 -1 0" limited="true"/>
+              <joint name="pronation_r" range="-1.5708 1.74533" limited="true"/>
+              <geom size="0.035 0.134387" pos="0 0 -0.134387" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+              <site name="right_elbow" size="0.012" rgba="1 0.2 0.2 1"/>
+              <site name="right_olecranon" size="0.012" pos="-0.03 0 0.01" rgba="1 0.2 0.2 1"/>
+              <site name="right_cubital_fossa" size="0.012" pos="0.025 0 0" rgba="1 0.2 0.2 1"/>
+              <body name="hand_r" pos="0 0 -0.268773">
+                <joint name="wrist_flexion_r" range="-1.309 1.309" axis="1 0 0" limited="true"/>
+                <joint name="wrist_deviation_r" range="-0.610865 0.610865" axis="0 -1 0" limited="true"/>
+                <geom size="0.03 0.0424086" pos="0 0 -0.0424086" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+                <site name="right_wrist" size="0.012" rgba="1 0.2 0.2 1"/>
+                <site name="right_index_third_joint" size="0.012" pos="0.01 0 -0.0848172" rgba="1 0.2 0.2 1"/>
+                <site name="right_pinky_third_joint" size="0.012" pos="-0.035 0 -0.0763354" rgba="1 0.2 0.2 1"/>
+                <site name="right_middle_third_joint" size="0.012" pos="-0.01 0 -0.0865135" rgba="1 0.2 0.2 1"/>
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="clavicle_l" pos="0 0 0.47384">
+          <joint name="clavicle_elevation_l" range="-0.174533 0.610865" axis="1 0 0" limited="true"/>
+          <joint name="clavicle_protraction_l" range="-0.349066 0.436332" limited="true"/>
+          <geom size="0.03 0.0969709" pos="0 0.0943483 -0.0224001" quat="0.784537 0.620081 0 0" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+          <site name="left_acromion" size="0.012" pos="0 0.198697 0.02" rgba="1 0.2 0.2 1"/>
+          <body name="upperarm_l" pos="0 0.188697 -0.0448002">
+            <joint name="shoulder_l" type="ball"/>
+            <geom size="0.04 0.143192" pos="0 0 -0.143192" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+            <site name="left_shoulder" size="0.012" rgba="1 0.2 0.2 1"/>
+            <body name="forearm_l" pos="0 0 -0.286383">
+              <joint name="elbow_flexion_l" range="-0.0872665 2.70526" axis="0 -1 0" limited="true"/>
+              <joint name="pronation_l" range="-1.5708 1.74533" axis="0 0 -1" limited="true"/>
+              <geom size="0.035 0.134387" pos="0 0 -0.134387" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+              <site name="left_elbow" size="0.012" rgba="1 0.2 0.2 1"/>
+              <site name="left_olecranon" size="0.012" pos="-0.03 0 0.01" rgba="1 0.2 0.2 1"/>
+              <site name="left_cubital_fossa" size="0.012" pos="0.025 0 0" rgba="1 0.2 0.2 1"/>
+              <body name="hand_l" pos="0 0 -0.268773">
+                <joint name="wrist_flexion_l" range="-1.309 1.309" axis="-1 0 0" limited="true"/>
+                <joint name="wrist_deviation_l" range="-0.610865 0.610865" axis="0 -1 0" limited="true"/>
+                <geom size="0.03 0.0424086" pos="0 0 -0.0424086" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+                <site name="left_wrist" size="0.012" rgba="1 0.2 0.2 1"/>
+                <site name="left_index_third_joint" size="0.012" pos="0.01 0 -0.0848172" rgba="1 0.2 0.2 1"/>
+                <site name="left_pinky_third_joint" size="0.012" pos="-0.035 0 -0.0763354" rgba="1 0.2 0.2 1"/>
+                <site name="left_middle_third_joint" size="0.012" pos="-0.01 0 -0.0865135" rgba="1 0.2 0.2 1"/>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="thigh_r" pos="0 -0.0889995 0">
+        <joint name="hip_flexion_r" range="-0.523599 2.26893" axis="0 -1 0" limited="true"/>
+        <joint name="hip_adduction_r" range="-0.872665 0.523599" axis="1 0 0" limited="true"/>
+        <joint name="hip_rotation_r" range="-0.785398 0.785398" limited="true"/>
+        <geom size="0.06 0.211275" pos="0 0 -0.211275" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+        <site name="right_hip" size="0.012" rgba="1 0.2 0.2 1"/>
+        <body name="shank_r" pos="0 0 -0.422549">
+          <joint name="knee_flexion_r" range="-0.0872665 2.70526" axis="0 1 0" limited="true"/>
+          <geom size="0.045 0.200968" pos="0 0 -0.200968" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+          <site name="right_knee" size="0.012" rgba="1 0.2 0.2 1"/>
+          <body name="foot_r" pos="0 0 -0.401935">
+            <joint name="ankle_flexion_r" range="-0.872665 0.698132" axis="0 -1 0" limited="true"/>
+            <joint name="subtalar_r" range="-0.523599 0.523599" axis="1 0 0" limited="true"/>
+            <geom size="0.11893 0.045 0.0351878" pos="0.0482751 0 -0.0351878" type="box" contype="0" conaffinity="0" rgba="0.3 0.3 0.35 1" mass="1"/>
+            <site name="right_ankle" size="0.012" rgba="1 0.2 0.2 1"/>
+            <site name="right_heel" size="0.012" pos="-0.0706551 0 -0.0503757" rgba="1 0.2 0.2 1"/>
+            <site name="right_big_toe_tip" size="0.012" pos="0.167205 0.02 -0.0553757" rgba="1 0.2 0.2 1"/>
+            <site name="right_small_toe_tip" size="0.012" pos="0.133764 -0.04 -0.0553757" rgba="1 0.2 0.2 1"/>
+          </body>
+        </body>
+      </body>
+      <body name="thigh_l" pos="0 0.0889995 0">
+        <joint name="hip_flexion_l" range="-0.523599 2.26893" axis="0 -1 0" limited="true"/>
+        <joint name="hip_adduction_l" range="-0.872665 0.523599" axis="-1 0 0" limited="true"/>
+        <joint name="hip_rotation_l" range="-0.785398 0.785398" axis="0 0 -1" limited="true"/>
+        <geom size="0.06 0.211275" pos="0 0 -0.211275" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+        <site name="left_hip" size="0.012" rgba="1 0.2 0.2 1"/>
+        <body name="shank_l" pos="0 0 -0.422549">
+          <joint name="knee_flexion_l" range="-0.0872665 2.70526" axis="0 1 0" limited="true"/>
+          <geom size="0.045 0.200968" pos="0 0 -0.200968" type="capsule" contype="0" conaffinity="0" rgba="0.55 0.7 0.95 1" mass="1"/>
+          <site name="left_knee" size="0.012" rgba="1 0.2 0.2 1"/>
+          <body name="foot_l" pos="0 0 -0.401935">
+            <joint name="ankle_flexion_l" range="-0.872665 0.698132" axis="0 -1 0" limited="true"/>
+            <joint name="subtalar_l" range="-0.523599 0.523599" axis="-1 0 0" limited="true"/>
+            <geom size="0.11893 0.045 0.0351878" pos="0.0482751 0 -0.0351878" type="box" contype="0" conaffinity="0" rgba="0.3 0.3 0.35 1" mass="1"/>
+            <site name="left_ankle" size="0.012" rgba="1 0.2 0.2 1"/>
+            <site name="left_heel" size="0.012" pos="-0.0706551 0 -0.0503757" rgba="1 0.2 0.2 1"/>
+            <site name="left_big_toe_tip" size="0.012" pos="0.167205 -0.02 -0.0553757" rgba="1 0.2 0.2 1"/>
+            <site name="left_small_toe_tip" size="0.012" pos="0.133764 0.04 -0.0553757" rgba="1 0.2 0.2 1"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

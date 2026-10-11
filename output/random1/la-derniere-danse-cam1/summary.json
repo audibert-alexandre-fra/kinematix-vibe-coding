@@ -1,0 +1,69 @@
+{
+  "video": "data/random1/la-derniere-danse-cam1.mp4",
+  "backend": "instanthmr",
+  "n_frames": 256,
+  "fps": 26.78,
+  "height_m": 1.8,
+  "data_scale": 0.993249709615283,
+  "dimensions_m": {
+    "ankle_height": 0.07080989663382063,
+    "shank": 0.40129691406007495,
+    "thigh": 0.42344634485654137,
+    "hip_width": 0.1622904314433676,
+    "pelvis_to_lumbar": 0.11745229358334693,
+    "torso": 0.47117374749362434,
+    "shoulder_width": 0.3741966103682603,
+    "shoulder_drop": 0.04147265413632904,
+    "neck_to_eyes": 0.19823370239790397,
+    "eyes_to_top": 0.11747973671053982,
+    "upper_arm": 0.2843660034529308,
+    "forearm": 0.26941150099869876,
+    "hand": 0.08501675390886552,
+    "foot_length": 0.2394229005084973,
+    "heel_back": 0.07046381948900617
+  },
+  "model_standing_height_m": 1.799892635735852,
+  "calibration_rmse_cm": {
+    "before": 1.6866409677101921,
+    "after": 0.6617736317891927
+  },
+  "ik_marker_error_cm": {
+    "median": 0.6962386037598208,
+    "mean": 1.5442297139733376
+  },
+  "reprojection_error_px": {
+    "median": 3.389660671825541,
+    "mean": 3.953763492135307
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 23.772089719123755,
+    "sliding_drift_mean_cm": 13.546249032810383,
+    "contact_ratio": 0.7454427083333334
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 8.527633942230322,
+    "sliding_drift_mean_cm": 1.786948120672974,
+    "contact_ratio": 0.7454427083333334
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 38.56180174900055,
+    "pose_loading_s": 0.003943624999919848,
+    "calibration_s": 1.6121420419995047,
+    "ik_pass1_s": 0.7520257909991415,
+    "ik_pass2_s": 1.2029646669998328,
+    "outputs_s": 0.5069439170001715,
+    "total_s": 42.6358781659992
+  }
+}
