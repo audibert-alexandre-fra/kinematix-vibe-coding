@@ -25,10 +25,10 @@ class PipelineConfig:
     backend: str = "instanthmr"
     backend_kwargs: dict = field(default_factory=dict)
     root_cutoff_hz: float = 3.0      # filtrage de la trajectoire globale (profondeur bruitée)
-    local_cutoff_hz: float = 8.0     # filtrage de la pose locale
+    local_cutoff_hz: float = 6.0     # filtrage de la pose locale
     calib_frames: int = 40
     calib_rounds: int = 3
-    reproj_weight: float = 0.5
+    reproj_weight: float = 10.0      # contrainte 2D (meilleure cohérence multi-vues, cf. rapport)
     anti_sliding: bool = True
     render: bool = True
     draw_keypoints: bool = False

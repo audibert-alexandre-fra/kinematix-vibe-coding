@@ -4,50 +4,50 @@
   "n_frames": 130,
   "fps": 30.012466716943962,
   "height_m": 1.8,
-  "data_scale": 1.0145255645106346,
+  "data_scale": 1.014303979457693,
   "dimensions_m": {
-    "ankle_height": 0.07060011114023707,
-    "shank": 0.4022351555040895,
-    "thigh": 0.42103289645707653,
-    "hip_width": 0.1785014521784004,
-    "pelvis_to_lumbar": 0.11404196954884654,
-    "torso": 0.47321026373696834,
-    "shoulder_width": 0.3795513991133334,
-    "shoulder_drop": 0.04295998725579764,
-    "neck_to_eyes": 0.20157184422372434,
-    "eyes_to_top": 0.11721295902736079,
-    "upper_arm": 0.28712108225972693,
-    "forearm": 0.26875705039188724,
-    "hand": 0.08488594738622769,
-    "foot_length": 0.23831781794966553,
-    "heel_back": 0.07060668142480013
+    "ankle_height": 0.07058677583508975,
+    "shank": 0.4021961023179171,
+    "thigh": 0.4210032696841136,
+    "hip_width": 0.17838754214537142,
+    "pelvis_to_lumbar": 0.11409225474744149,
+    "torso": 0.47329939829181994,
+    "shoulder_width": 0.3793498256267678,
+    "shoulder_drop": 0.04312694195388519,
+    "neck_to_eyes": 0.20152448560558417,
+    "eyes_to_top": 0.117203364987894,
+    "upper_arm": 0.2869952944398015,
+    "forearm": 0.2686865288091546,
+    "hand": 0.08486370242282483,
+    "foot_length": 0.23818746260618007,
+    "heel_back": 0.07060556287325079
   },
-  "model_standing_height_m": 1.7999051996383033,
+  "model_standing_height_m": 1.7999056514698601,
   "calibration_rmse_cm": {
-    "before": 1.6097661313457756,
-    "after": 0.5673244808227061
+    "before": 1.607883176531744,
+    "after": 0.5660946533672156
   },
   "ik_marker_error_cm": {
-    "median": 0.5557069859571572,
-    "mean": 1.1196638569036677
+    "median": 0.77332217004033,
+    "mean": 1.2931301116109846
   },
   "reprojection_error_px": {
-    "median": 5.405042984446779,
-    "mean": 6.6518332891796215
+    "median": 4.214359665383726,
+    "mean": 5.38219292143775
   },
   "treadmill_belt_velocity_m_s": [
-    -0.9376208762431217,
-    0.02438705051463167
+    -0.9623858248284944,
+    0.024638715224875797
   ],
   "foot_sliding_before": {
-    "sliding_speed_mean_cm_s": 30.451377366687886,
-    "sliding_drift_mean_cm": 7.786037537140587,
-    "contact_ratio": 0.5371794871794872
+    "sliding_speed_mean_cm_s": 30.271503165606084,
+    "sliding_drift_mean_cm": 7.518163802887434,
+    "contact_ratio": 0.558974358974359
   },
   "foot_sliding_after": {
-    "sliding_speed_mean_cm_s": 9.33405363291819,
-    "sliding_drift_mean_cm": 0.6487774988404457,
-    "contact_ratio": 0.5371794871794872
+    "sliding_speed_mean_cm_s": 10.253137193883779,
+    "sliding_drift_mean_cm": 0.8750249547381115,
+    "contact_ratio": 0.558974358974359
   },
   "contact_config": {
     "height_threshold": 0.05,
@@ -59,11 +59,11 @@
   },
   "timings_s": {
     "pose_estimation_s": 33.823523832999854,
-    "pose_loading_s": 0.0029875840000386233,
-    "calibration_s": 1.358267125000566,
-    "ik_pass1_s": 0.3824317919998066,
-    "ik_pass2_s": 0.4043098749998535,
-    "outputs_s": 1.7171864170004483,
-    "total_s": 37.68571904200053
+    "pose_loading_s": 0.00309654199918441,
+    "calibration_s": 1.3518762910007354,
+    "ik_pass1_s": 0.455712749999293,
+    "ik_pass2_s": 0.4059390840011474,
+    "outputs_s": 1.7639203750004526,
+    "total_s": 37.80097233300148
   }
 }
