@@ -1,0 +1,112 @@
+COMPTE RENDU — Performances de la pipeline kinematix-vibe-coding sur data/
+Date : 2026-10-11 — Machine : Apple M3 Pro (CPU, 36 Go), pas de GPU NVIDIA
+Sorties : output/<modèle>/<mouvement>/<vidéo>/   (overlay_*.mp4, joint_angles.csv, qpos.npy,
+          trajectories.npz, model.xml, summary.json) ; output/comparaison_modeles.md
+
+1. PIPELINE ÉVALUÉE
+-------------------
+vidéo -> détection + pose 3D (InstantHMR ou MeTRAbs) -> 36 marqueurs virtuels -> filtrage
+(bassin 3 Hz, pose 6 Hz) -> repère monde (verticale + plan du sol estimés sur le corps)
+-> mise à l'échelle par la taille connue -> calibration automatique MuJoCo (15 longueurs de
+segments + offsets de marqueurs + échelle, 3 tours IK / moindres carrés) -> IK MuJoCo
+Levenberg-Marquardt image par image (marqueurs 3D + reprojection 2D + limites articulaires +
+continuité) -> détection des contacts pied-sol (sol fixe ou tapis roulant) -> 2e IK avec
+pieds ancrés (anti-glissement) -> angles articulaires + squelette projeté sur la vidéo.
+
+Tailles utilisées (data/heights.json, VALEURS PAR DÉFAUT, tailles réelles inconnues) :
+1,80 m (gait1, squat1, jumpingjack, random1), 1,65 m (gait2).
+
+2. MODÈLES COMPARÉS
+-------------------
+  instanthmr : InstantHMR ONNX + RF-DETR — usage COMMERCIAL autorisé — modèle par défaut.
+  metrabs    : MeTRAbs-ACAE-L (modèle de MonocularBiomechanics) — NON commercial — référence.
+  sam3d      : SAM 3D Body — non exécutable ici (poids HF à accès restreint + GPU NVIDIA).
+
+3. TEMPS DE TRAITEMENT (s, CPU M3 Pro ; contrainte : < 300 s par vidéo)
+-----------------------------------------------------------------------
+Vidéo                               images  InstantHMR total  MeTRAbs total
+gait1/raw-video-cam0                  130        37.7            170.4
+gait1/raw-video-cam1                  129        31.5            142.8
+gait1/raw-video-cam2                  129        33.3            139.3
+gait2/raw-video-cam0old (1080x1920)   305        65.7            344.4  (> 300 s)
+jumpingjack/raw-video-cam2             42        11.8             46.5
+random1/la-derniere-danse-cam1        256        42.3            270.9
+squat1/raw-video-cam0                 172        32.1            183.6
+squat1/raw-video-cam1                 207        37.2            220.5
+squat1/raw-video-cam2                 207        37.0            223.8
+  - InstantHMR : 0,2–0,26 s / image (détection + pose avec flip TTA ≈ 90 % du temps) ;
+    calibration ≈ 1,5–2 s ; IK 2 passes ≈ 1–3 s ; rendu ≈ 1 s. Toutes les vidéos < 70 s.
+  - MeTRAbs : ≈ 1,05 s / image + 2 min de chargement du modèle (non compté) -> 1 vidéo
+    dépasse 5 min sur CPU. Sur GPU : ≈ 30–60 ms / image (estimation).
+  - Hors modèle de pose, notre partie (calibration + IK + rendu) prend 3 à 10 s par vidéo.
+
+4. PRÉCISION — COHÉRENCE MULTI-VUES (pas de vérité terrain disponible)
+----------------------------------------------------------------------
+Les vues d'un même dossier filment le même mouvement : les angles devraient être identiques.
+Mesure : RMSE des angles entre chaque paire de caméras (synchronisation par corrélation,
+décalage <= 0,5 s ; squat1 : corrélation de synchronisation 0,98), moyenne sur 13 angles.
+
+               gait1 (3 vues)   squat1 (3 vues)
+  instanthmr       8.2°             13.0°
+  metrabs          5.7°              8.3°
+
+Détail (RMSE inter-vues, degrés) — InstantHMR / MeTRAbs :
+  gait1  : flexion hanche 11–12 / 4–5 ; flexion genou 14–17 / 9–10 ; cheville 10 / 7–8 ;
+           adduction hanche 5 / 5 ; flexion lombaire 1 / 1 ; coude 5–9 / 3–6 ; élévation épaule 3–5 / 4–6
+  squat1 : flexion hanche 13–17 / 6–8 ; flexion genou 11–19 / 6–8 ; cheville 11–16 / 9–13 ;
+           adduction hanche 9–13 / 6–7 ; lombaire 7.5 / 2 ; coude 10–21 / 9–14
+Corrélations des courbes de genou entre vues : squat1 0,98–0,99 (les deux modèles) ; gait1
+0,64–0,89 (InstantHMR).
+Interprétation : la forme des courbes est bien reproduite d'une vue à l'autre, les écarts
+sont surtout des biais (offsets) liés à la profondeur monoculaire (vues de face : flexion
+hanche/genou dans l'axe de la caméra) et aux occlusions. MeTRAbs (non commercial) est ~1,5x
+plus cohérent qu'InstantHMR ; SAM 3D Body (commercial) devrait réduire l'écart.
+NB : la cohérence inter-vues est une borne de la précision (erreur commune à toutes les vues
+non détectée) ; elle ne remplace pas une comparaison à un système optoélectronique.
+
+5. QUALITÉ DE L'AJUSTEMENT ET DE LA CALIBRATION
+-----------------------------------------------
+                                 InstantHMR          MeTRAbs
+  RMSE marqueurs après calib.    0,6–2,1 cm          0,7–1,1 cm
+  erreur IK médiane (3D)         0,7–2,4 cm          0,7–1,2 cm
+  reprojection 2D médiane        3–10 px             1,5–5 px
+  hauteur du modèle MuJoCo       = taille connue (écart < 5 mm, contrainte de la calibration)
+  échelle des données            0,86–1,03 (gait2 : 0,86 -> l'estimation de taille du modèle de
+                                 pose différait de 14 % de la taille supposée de 1,65 m)
+La calibration réduit l'erreur marqueurs d'un facteur 2 à 3 (ex. 1,5 -> 0,5 cm sur gait1).
+
+6. GLISSEMENT DES PIEDS
+-----------------------
+Dérive horizontale moyenne d'un point de pied pendant un contact (cm), avant -> après contraintes :
+  InstantHMR : gait1 3,1–10,3 -> 0,3–2,6 ; gait2 (tapis) 7,8 -> 1,1 ; jumpingjack 3,4 -> 0,3 ;
+               random1 14,1 -> 1,7 ; squat1 3,4–10,4 -> 0,3–3,2
+  MeTRAbs    : 3,4–16,9 -> 0,2–2,2
+  - Tapis roulant (gait2) détecté automatiquement (bassin immobile, pieds en appui reculant
+    à ≈ 0,9 m/s) : les pieds suivent le tapis au lieu d'être figés.
+  - Un poids de contact plus fort (200–1000) ne réduit pas la dérive maximale (≈ 3 cm,
+    contraintes incompatibles avec les marqueurs/limites) mais dégrade les angles (squat1
+    13 -> 17°) : poids 50 retenu comme compromis.
+  - Mesure en cm/s (summary.json) plus pessimiste : elle inclut les images de transition.
+
+7. RÉGLAGES (balayages sur poses en cache, critère : cohérence multi-vues)
+-------------------------------------------------------------------------
+  poids reprojection 2D : 0,5 -> 10 : gait1 9,4° -> 6,0° (avec filtre 6 Hz)
+  filtre pose locale 8 -> 6 Hz ; a priori lombaire renforcé (bascule du bassin non observable
+  avec 2 marqueurs de hanche) ; flip test-time augmentation : effet neutre (gardé).
+  Après correction du faux "tapis roulant" sur la marche au sol : gait1 6,0° -> 8,2°
+  (l'ancien chiffre bénéficiait d'un artefact).
+
+8. LIMITES CONNUES
+------------------
+  - Caméra supposée fixe (gait2 semble tenue à la main -> erreurs plus élevées).
+  - Intrinsèques inconnues (focale = diagonale), distorsion grand-angle non corrigée.
+  - Tailles des sujets inconnues : échelles et longueurs de segments à revalider.
+  - Pas de vérité terrain : précision estimée par cohérence multi-vues uniquement.
+  - Une seule personne suivie (la plus grande / centrée).
+
+9. RECOMMANDATIONS
+------------------
+  1. Production commerciale : InstantHMR (rapide, < 70 s / vidéo CPU) ; passer à SAM 3D Body
+     sur GPU NVIDIA dès que les poids sont accessibles (même interface, --backend sam3d).
+  2. Fournir les tailles réelles et, si possible, la focale des caméras.
+  3. Ajouter une vérité terrain (mocap) pour mesurer l'erreur absolue des angles.

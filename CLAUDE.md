@@ -86,5 +86,7 @@ uv run kinematix evaluate output          # cohérence multi-vues + output/compa
 - [x] 12. CLI `kinematix run/batch` : pipeline complet, export qpos/angles CSV/overlay, timings (< 5 min).
 - [x] 13. Évaluation multi-vues : comparaison des angles articulaires entre caméras d'un même
         mouvement (synchronisation temporelle, RMSE, corrélation).
-- [ ] 14. `output/` : exécution sur toutes les vidéos de `data/` + `rapport/compte_rendu_performances.txt`.
-- [ ] 15. Projection du squelette sur toutes les vidéos (overlays) et livraison.
+- [x] 14. `output/` : exécution sur toutes les vidéos de `data/` + `rapport/compte_rendu_performances.txt`.
+- [x] 15. Projection du squelette sur toutes les vidéos (overlays) et livraison.
+- [x] 16. Backend MeTRAbs (référence non commerciale) + sorties séparées par modèle + comparaison.
+- [ ] 17. (à faire) SAM 3D Body sur GPU NVIDIA (poids HF à accès restreint) ; tailles réelles des sujets.
