@@ -73,3 +73,28 @@ def test_instanthmr_on_video():
     assert len(seq) == 8 and seq.valid.all()
     reproj = seq.intrinsics.project(seq.joints3d_cam)
     assert np.median(np.linalg.norm(reproj - seq.joints2d, axis=-1)) < 25
+
+
+def test_sam3d_parquet_adapter(tmp_path):
+    pa = pytest.importorskip("pyarrow")
+    import pyarrow.parquet as pq
+
+    from kinematix_vibe_coding.models.sam3d import parquet_to_sequence
+    from kinematix_vibe_coding.video import VideoWriter
+
+    video = tmp_path / "v.mp4"
+    with VideoWriter(video, 30, 64, 48) as w:
+        for _ in range(4):
+            w.write(np.zeros((48, 64, 3), np.uint8))
+    rows = []
+    for f in range(4):
+        for pid in (0, 1) if f < 3 else (0,):
+            rows.append({"frame_idx": f, "person_id": pid, "joints_3d": np.full(210, 0.1 * f).tolist(),
+                         "joints_2d": np.full(140, 10.0).tolist(), "cam_translation": [0.0, 0.0, 3.0],
+                         "cam_focal_length": [80.0], "cam_principal_point": [32.0, 24.0],
+                         "bbox": [0, 0, 10, 10], "confidence": 0.9})
+    pq.write_table(pa.Table.from_pylist(rows), tmp_path / "v.parquet")
+    seq = parquet_to_sequence(tmp_path / "v.parquet", video)
+    assert len(seq) == 4 and seq.valid.all()
+    np.testing.assert_allclose(seq.joints3d_cam[2, 0], [0.2, 0.2, 3.2])
+    assert seq.intrinsics.fx == 80.0

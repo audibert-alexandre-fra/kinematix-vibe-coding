@@ -20,12 +20,17 @@ dependencies = [
 detector = [
     "rfdetr>=1.2",
 ]
+# Lecture des exports SAM3DFast (SAM 3D Body)
+sam3d = [
+    "pyarrow>=14",
+]
 
 [project.scripts]
 kinematix = "kinematix_vibe_coding.cli:main"
 
 [dependency-groups]
 dev = [
+    "pyarrow>=26.0.0",
     "pytest>=8.0",
     "ruff>=0.6",
 ]

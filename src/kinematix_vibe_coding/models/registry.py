@@ -13,7 +13,13 @@ def _instanthmr(**kw) -> PoseBackend:
     return InstantHMRBackend(**kw)
 
 
-_BACKENDS: dict[str, Callable[..., PoseBackend]] = {"instanthmr": _instanthmr}
+def _sam3d(**kw) -> PoseBackend:
+    from .sam3d import Sam3DBackend
+
+    return Sam3DBackend(**kw)
+
+
+_BACKENDS: dict[str, Callable[..., PoseBackend]] = {"instanthmr": _instanthmr, "sam3d": _sam3d}
 
 
 def register_backend(name: str, factory: Callable[..., PoseBackend]) -> None:
