@@ -1,0 +1,57 @@
+RAPPORT — MMPose RTMW3D-L (pose 3D corps entier, projects/rtmpose3d)
+Date : 2026-10-11 — Machine : Apple M3 Pro (CPU, 36 Go), pas de GPU NVIDIA
+Dépôt : https://github.com/open-mmlab/mmpose (1.3.2), projects/rtmpose3d
+Poids : rtmw3d-l_8xb64_cocktail14-384x288-794dbc78_20240626.pth (+ RTMDet-m personne)
+
+1. LICENCE
+  Code MMPose / MMDetection : Apache-2.0. Poids RTMW3D entraînés sur "Cocktail14" (14 jeux de
+  données dont Human3.6M / H3WB, licences non commerciales) -> à considérer RECHERCHE UNIQUEMENT.
+
+2. INSTALLATION — SUCCÈS (difficile)
+  - mmcv n'a pas de roues pour macOS arm64 : compilation depuis les sources (mmcv 2.1.0 avec ops,
+    ≈ 10 min) dans un environnement séparé third_party/envs/mmpose (Python 3.10, torch 2.1.2,
+    numpy < 2). Il faut setuptools < 70 (pkg_resources) et --no-build-isolation.
+  - mmpose installé en mode éditable : les configs "mmpose::..." sont introuvables (dossier .mim
+    absent) -> installation non éditable.
+  - Python système sans certificats SSL : poids téléchargés avec curl dans weights/mmpose/.
+  - Script : tools/run_rtmw3d.py -> weights/rtmw3d_cache/ ; backend `--backend rtmw3d`.
+
+3. SORTIES ET INTÉGRATION
+  133 points COCO-WholeBody (corps, pieds : gros orteil, petit orteil, talon ; visage ; mains) :
+  coordonnées pixels (x, y) + profondeur RELATIVE au bassin z (m). La profondeur absolue n'est pas
+  prédite (le code d'exemple suppose une focale et une profondeur fixes) : nous l'estimons image
+  par image en cherchant la profondeur du bassin Z0 pour laquelle les segments rétro-projetés
+  (cuisse, jambe, bras, avant-bras, tronc, pied, largeurs bassin/épaules) ont leur longueur
+  anthropométrique (médiane pondérée, filtre médian temporel ; models/cached.py), l'échelle
+  exacte étant ensuite recalée par la taille connue lors de la calibration.
+
+4. DIFFICULTÉS
+  - Le détecteur RTMDet (plus grande personne) choisissait sur gait1/cam0 une personne coupée au
+    premier plan -> la même détection que les autres modèles est utilisée (RF-DETR + suivi).
+  - Profondeur relative peu fiable : corrélation 0,53–0,60 avec celle de MeTRAbs, amplitude
+    ≈ 1,3 x trop grande (échelle de données recalée 0,75–0,90 au lieu de ≈ 1).
+
+5. TEMPS D'INFÉRENCE (CPU M3 Pro)
+  - Seul sur la machine : ≈ 0,51–0,54 s/image (dont détection RF-DETR ≈ 0,06–0,07 s) ; avec un autre
+    calcul en parallèle : 0,7–1,2 s/image. Pipeline complète 55–353 s par vidéo
+    (gait2 1080x1920, 305 images, mesurée en parallèle d'un autre calcul : > 5 min ; ≈ 170 s estimées seule).
+  - GPU (estimation) : RTMW3D-L ≈ 10–15 ms/personne (RTX 3090/4090, FP16), RTMDet-m ≈ 10 ms ->
+    ≈ 25 ms/image.
+
+6. RÉSULTATS DANS LA PIPELINE (output/rtmw3d)
+  Vidéo                images  total (s)  échelle  calib. (cm)  reproj. (px)  dérive pied (cm)
+  gait1/cam0             130      99         0.90       3.5          4.6        3.1 -> 0.2
+  gait1/cam1             129     139         0.87       4.4          5.9        6.3 -> 0.4
+  gait1/cam2             129     156         0.84       5.1          8.1       10.2 -> 0.7
+  gait2/cam0old          305     353         0.75       5.2         13.5        6.9 -> 0.8
+  jumpingjack/cam2        42      55         0.82       5.5          6.7        2.9 -> 0.4
+  random1/cam1           256     145         0.89       3.3          3.4       10.3 -> 0.5
+  squat1/cam0            172      97         0.82       6.5          7.1       13.0 -> 2.2
+  squat1/cam1            207     117         0.80       6.6          4.2        3.7 -> 0.7
+  squat1/cam2            207     124         0.84       7.7          7.3        8.2 -> 1.3
+  Cohérence multi-vues : gait1 18,3°, squat1 26,4° (le moins cohérent des 5 modèles).
+
+7. CONCLUSION
+  Très bons points 2D (reprojection 3–8 px, pieds complets) mais 3D faible : la profondeur
+  relative est bruitée et l'absence de profondeur absolue impose une reconstruction heuristique.
+  Installation lourde sur Mac (compilation mmcv). Non retenu.
