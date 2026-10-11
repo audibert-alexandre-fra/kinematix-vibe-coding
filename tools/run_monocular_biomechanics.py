@@ -83,8 +83,11 @@ def main():
                                                skip_action=True, fast_inference=True, check_constraints=False)
     np.savez(os.path.join(a.out, f"{name}_fitted_model.npz"), timestamps=ts, qpos=np.array(qpos),
              sites=np.array(state.site_xpos), scale=np.array(model.body_scale))
-    print("METRICS", {k: float(v) for k, v in metrics.items()})
-    print("TIMINGS", timings)
+    print("TIMINGS", timings, flush=True)
+    import json
+    with open(os.path.join(a.out, f"{name}_timings.json"), "w") as f:
+        json.dump(timings, f, indent=1)
+    print("METRICS", {k: np.asarray(v).mean().item() for k, v in metrics.items()})
 
 
 if __name__ == "__main__":
