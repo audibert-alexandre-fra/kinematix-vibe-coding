@@ -1,0 +1,68 @@
+RAPPORT — SAM3DFast (SAM 3D Body accéléré)
+https://github.com/mohamdev/SAM3DFast — modèle : https://huggingface.co/facebook/sam-3d-body-dinov3
+Date : 2026-10-11 — Machine : Apple M3 Pro (12 cœurs CPU, 36 Go), macOS 14.4, pas de GPU NVIDIA
+
+1. DESCRIPTION
+--------------
+Application autonome vidéo -> maillages 3D multi-personnes (format MHR, 18 439 sommets) +
+70 keypoints MHR70, basée sur SAM 3D Body (Meta, backbone DINOv3-H+ ≈ 840 M paramètres)
+accéléré par un moteur TensorRT FP16 et des optimisations du décodeur (3 couches sur 6).
+Détection YOLO11, suivi, export .rrd (Rerun) et .parquet.
+
+2. INSTALLATION : PARTIELLE — EXÉCUTION LOCALE IMPOSSIBLE
+---------------------------------------------------------
+  - Le code a été cloné (third_party/SAM3DFast) et analysé.
+  - Les poids facebook/sam-3d-body-dinov3 (model.ckpt 2 Go + mhr_model.pt 664 Mo) sont
+    "gated" sur HuggingFace : il faut accepter la licence avec un compte puis `hf auth login`.
+    Aucun jeton HuggingFace n'est configuré sur cette machine -> téléchargement impossible
+    sans action de l'utilisateur.
+  - Le preset "fast" exige TensorRT (NVIDIA uniquement) ; les presets "quality"/"original"
+    utilisent CUDA (device par défaut cuda:0). Sur Apple Silicon il faudrait porter vers
+    MPS/CPU : possible pour le backbone PyTorch, mais très lent (voir estimation).
+  - Disque : ≈ 5 Go de poids ; 26 Go libres sur la machine.
+
+3. DIFFICULTÉS
+--------------
+  - Poids soumis à acceptation (licence SAM) — bloquant sans compte HF.
+  - Linux x86_64 + GPU NVIDIA requis (TensorRT, torch cu121).
+  - Détecteur YOLO11 (ultralytics) sous licence AGPL-3.0 -> à remplacer par RF-DETR
+    (Apache-2.0) pour un usage commercial.
+  - mhr / pymomentum entrent en conflit avec torch (segfault) : environnement dédié.
+
+4. LICENCE
+----------
+  - SAM 3D Body (poids + code) : licence SAM — usage commercial autorisé.
+  - SAM3DFast : pas de fichier LICENSE dans le dépôt (droits par défaut réservés) ; le code
+    vendorisé sam_3d_body/ reste sous licence SAM. À clarifier avec l'auteur avant usage
+    commercial.
+  - YOLO11 : AGPL-3.0 (non commercial sans licence Ultralytics).
+
+5. TEMPS D'INFÉRENCE (ESTIMATIONS — non mesurés localement)
+-----------------------------------------------------------
+  GPU (chiffres du dépôt, RTX 4070, par personne et par image) :
+    original (bf16, 6 couches)        ≈ 150–200 ms   (~5–7 FPS)
+    quality  (bf16, 3 couches)        ≈ 90–110 ms
+    fast     (TensorRT FP16)          ≈ 50–60 ms     (backbone seul : 25 ms)
+    -> vidéo de 300 images : ≈ 15–60 s sur GPU.
+  CPU / Apple M3 Pro (estimation à partir du coût du ViT-H : ≈ 1,2 TFLOP par image à
+    512 px) : ≈ 4–8 s / image en PyTorch CPU, ≈ 1–2 s / image en MPS
+    -> 300 images : 5–40 min, hors contrainte des 5 min.
+
+6. INTÉGRATION DANS LA PIPELINE
+-------------------------------
+Le backend `sam3d` (src/kinematix_vibe_coding/models/sam3d.py) :
+  - lance la CLI SAM3DFast si le dépôt + poids sont disponibles (variable SAM3DFAST_DIR),
+  - ou relit un export .parquet calculé ailleurs (machine GPU) : SAM3D_PARQUET_DIR.
+Les keypoints étant au même format MHR70 qu'InstantHMR, la calibration et l'IK MuJoCo
+fonctionnent sans modification :  uv run kinematix run VIDEO --height 1.80 --backend sam3d
+
+Pour l'activer : accepter la licence sur https://huggingface.co/facebook/sam-3d-body-dinov3,
+`hf auth login`, puis `hf download facebook/sam-3d-body-dinov3 --local-dir
+third_party/SAM3DFast/models/sam-3d-body-dinov3` sur une machine Linux + GPU NVIDIA.
+
+7. CONCLUSION
+-------------
+Meilleure précision attendue (InstantHMR est distillé de / entraîné sur les mêmes données que
+SAM 3D Body, qui sert de référence) mais non exécutable sur la machine de développement
+(poids gated + GPU NVIDIA requis). InstantHMR est retenu par défaut ; SAM 3D Body reste un
+backend optionnel interchangeable.

@@ -5,13 +5,10 @@ __pycache__/
 .ruff_cache/
 # poids des modèles (téléchargés à la demande)
 weights/
-*.onnx
+/*.onnx
 *.pth
 *.ckpt
-# sorties lourdes
-output/**/*.mp4
-output/**/*.npz
-!output/**/overlay_*.mp4
+# les sorties de output/ (overlays, angles, trajectoires) sont versionnées
 third_party/
 .DS_Store
 init.sh

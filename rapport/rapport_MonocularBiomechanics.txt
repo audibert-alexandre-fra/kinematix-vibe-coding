@@ -1,0 +1,75 @@
+RAPPORT — MonocularBiomechanics
+https://github.com/IntelligentSensingAndRehabilitation/MonocularBiomechanics
+Date : 2026-10-11 — Machine : Apple M3 Pro (12 cœurs CPU, 36 Go), macOS 14.4, pas de GPU NVIDIA
+
+1. DESCRIPTION
+--------------
+Pipeline "Portable Biomechanics Laboratory" (Peiffer et al., 2025) :
+  (a) MeTRAbs-ACAE-L (TensorFlow Hub, https://bit.ly/metrabs_l) : détection + pose 3D,
+      squelette "bml_movi_87" (87 points) ;
+  (b) ajustement biomécanique "end-to-end" en JAX / MuJoCo-MJX : une représentation implicite
+      f_theta(t) -> qpos (40 ddl) passe dans la cinématique directe d'un modèle MuJoCo
+      (humanoid_torque.xml, dérivé d'OpenSim) ; on optimise (Adam, 10 000 itérations par
+      défaut dans main.py) l'écart 3D + reprojection 2D + mise à l'échelle + offsets de sites.
+
+2. INSTALLATION : RÉUSSIE (CPU)
+-------------------------------
+  cd third_party/MonocularBiomechanics && uv sync --python 3.12      (≈ 13 s, uv.lock fourni)
+  Exécution sans interface (gradio) : tools/run_monocular_biomechanics.py (ce dépôt), qui
+  reproduit main.py : MeTRAbs -> keypoints -> MonocularDataset -> get_model -> fit_model.
+
+3. DIFFICULTÉS RENCONTRÉES
+--------------------------
+  - Testé officiellement sous Ubuntu + CUDA uniquement ; sur macOS : CPU seulement
+    (TensorFlow et JAX n'utilisent pas le GPU Apple ici).
+  - Rendu (overlay / trajectoire) basé sur EGL (Linux) : non disponible sur macOS
+    (MUJOCO_GL=egl) ; nous avons uniquement exécuté l'estimation + l'ajustement.
+  - Téléchargement de MeTRAbs-L : 1,1 Go depuis bit.ly -> TF Hub, chargement ≈ 2 min à chaque
+    lancement.
+  - Avertissements de dépréciation (pkg_resources / setuptools>=81) ; README recommande
+    setuptools==81.0.0 en cas d'erreur TensorFlow.
+  - Le gradio / notebook supposent une seule personne dans l'image (pas de suivi).
+  - Intrinsèques caméra codées en dur (Samsung Galaxy S20) : approximation pour nos caméras
+    grand-angle.
+  - Bug mineur dans notre script : affichage des métriques (tableau non scalaire) -> corrigé.
+
+4. LICENCE — NON UTILISABLE COMMERCIALEMENT EN L'ÉTAT
+------------------------------------------------------
+  - Code : GNU AGPL-3.0 (contaminant, obligation de publier le code d'un service en ligne).
+  - MeTRAbs : code MIT mais modèles entraînés sur des jeux de données à licence
+    non commerciale (Human3.6M, MuCo, etc.) -> poids non utilisables commercialement.
+  - Modèle MuJoCo humanoid_torque (dérivé OpenSim/MyoSuite) sous AGPL avec le dépôt.
+  => C'est pourquoi la partie pose/mesh a été remplacée (InstantHMR, licence SAM) et le modèle
+     MuJoCo réécrit de zéro (src/kinematix_vibe_coding/models/humanoid.py).
+
+5. TEMPS D'INFÉRENCE MESURÉS (CPU M3 Pro)
+-----------------------------------------
+  Vidéo                                images   MeTRAbs        fit 2000 it.   chargement
+  jumpingjack/raw-video-cam2 (800x600)     42   60,5 s (1,44 s/img)*   91 s      122 s
+  squat1/raw-video-cam0 (800x600)         172   217,9 s (1,27 s/img)  160 s      121 s
+  (* mesuré pendant qu'un autre calcul tournait sur la machine)
+
+  Ajustement à 10 000 itérations (valeur par défaut de main.py) : ≈ 5 x 160 s ≈ 13 min pour
+  172 images (le coût par itération croît avec la durée de la vidéo).
+  => Temps total CPU pour squat1/cam0 (6,9 s de vidéo) : ≈ 2 + 3,6 + 13 ≈ 19 min.
+  => Ne respecte pas la contrainte "< 5 min par vidéo" sur CPU.
+
+  Qualité de l'ajustement (2000 it.) : erreur 3D moyenne 6,5 cm (jumpingjack), 8,6 cm (squat),
+  reprojection moyenne ≈ 99 px et 132 px (intrinsèques Samsung inadaptées à nos caméras).
+
+6. ESTIMATION GPU (non mesurée, pas de GPU NVIDIA disponible)
+--------------------------------------------------------------
+  - MeTRAbs-L (EfficientNetV2-L, 384 px) sur RTX 4070 / A100 : ≈ 30–60 ms / image en batch
+    -> 172 images ≈ 5–10 s (+ chargement du modèle ≈ 1–2 min, une fois).
+  - Fit JAX/MJX 10 000 itérations sur GPU : ≈ 1–3 min (compilation XLA incluse).
+  => ≈ 2–5 min par vidéo courte sur GPU, compatible avec la contrainte de 5 min.
+
+7. CONCLUSION
+-------------
+Installation et exécution réussies sur CPU (estimation + ajustement). Pipeline de référence de
+qualité clinique (validation < 3° annoncée) mais : licence AGPL + poids non commerciaux, et
+≈ 20 min / vidéo sur CPU. Nous en reprenons les idées (marqueurs virtuels = keypoints, modèle
+MuJoCo, mise à l'échelle des segments, offsets de sites régularisés, reprojection 2D) dans
+une implémentation propre, rapide (IK Levenberg-Marquardt image par image au lieu d'une
+optimisation globale par descente de gradient) et sous licence permissive.
+Sorties brutes : third_party/MonocularBiomechanics/mb_out/ (non versionnées).

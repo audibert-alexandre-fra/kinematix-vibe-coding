@@ -63,16 +63,16 @@ uv run kinematix batch data --out output  # toutes les vidéos
 - [x] 0. Exploration : dépôts de référence, licences, vidéos de `data/`, machine (M3 Pro, pas de CUDA).
 - [x] 1. Squelette du projet uv (Python 3.12), arborescence, CLAUDE.md, .gitignore.
 - [x] 2. CI GitHub Actions (ruff + pytest) + test de fumée.
-- [ ] 3. MonocularBiomechanics : installation (env séparé), exécution sur une vidéo, mesure
+- [x] 3. MonocularBiomechanics : installation (env séparé), exécution sur une vidéo, mesure
         des temps CPU / estimation GPU → `rapport/rapport_MonocularBiomechanics.txt`.
-- [ ] 4. InstantHMR : installation, poids ONNX, exécution, temps CPU / CoreML / estimation GPU
+- [x] 4. InstantHMR : installation, poids ONNX, exécution, temps CPU / CoreML / estimation GPU
         → `rapport/rapport_InstantHMR.txt`.
-- [ ] 5. SAM3DFast (SAM 3D Body) : installation, poids (HF gated), temps
+- [x] 5. SAM3DFast (SAM 3D Body) : installation, poids (HF gated), temps
         → `rapport/rapport_SAM3DFast.txt`.
 - [x] 6. `video/` : lecteur vidéo, métadonnées, intrinsèques par défaut + tests.
-- [ ] 7. `models/` : interface `PoseBackend` + `PoseSequence`, détecteur personne (licence commerciale),
+- [x] 7. `models/` : interface `PoseBackend` + `PoseSequence`, détecteur personne (licence commerciale),
         backend InstantHMR (+ SAM3D si dispo), suivi de la personne principale + tests.
-- [~] 8. `utils/` : définitions squelettes (MHR70), filtres temporels, rendu overlay + tests.
+- [x] 8. `utils/` : définitions squelettes (MHR70), filtres temporels, rendu overlay + tests.
 - [x] 9. Modèle humain MuJoCo paramétrique (généré par MjSpec, licence libre) avec sites marqueurs.
 - [x] 10. `calibration/` : marqueurs virtuels depuis keypoints, mise à l'échelle par taille connue,
         estimation du plan du sol, calibration automatique des segments par optimisation MuJoCo + tests.

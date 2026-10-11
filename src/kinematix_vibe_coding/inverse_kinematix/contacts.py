@@ -20,7 +20,8 @@ from ..utils.filters import lowpass, segments, smooth_bool
 @dataclass
 class ContactConfig:
     height_threshold: float = 0.05     # m au-dessus de la hauteur "pied à plat"
-    speed_threshold: float = 0.35      # m/s (relatif au sol / tapis)
+    speed_threshold: float = 0.5       # m/s (relatif au sol / tapis)
+    stance_margin: float = 0.03        # m : pied d'appui = pied le plus bas avec cette marge
     min_frames: int = 3
     treadmill_min_speed: float = 0.2   # m/s : en-dessous, sol fixe
     weight: float = 50.0               # poids des cibles de contact dans l'IK
@@ -39,8 +40,9 @@ def horizontal_velocity(p: np.ndarray, fps: float) -> np.ndarray:
 
 
 def detect_contacts(foot_pos: np.ndarray, flat_heights: np.ndarray, fps: float,
-                    cfg: ContactConfig | None = None) -> ContactResult:
-    """`foot_pos` : (T, F, 3) positions monde des sites de pied ; `flat_heights` : (F,)."""
+                    cfg: ContactConfig | None = None, foot_groups: list[list[int]] | None = None) -> ContactResult:
+    """`foot_pos` : (T, F, 3) positions monde des sites de pied ; `flat_heights` : (F,) ;
+    `foot_groups` : indices des points de chaque pied (ex. [[0, 2, 4], [1, 3, 5]])."""
     cfg = cfg or ContactConfig()
     T, F, _ = foot_pos.shape
     h = foot_pos[..., 2] - flat_heights[None]
@@ -55,6 +57,18 @@ def detect_contacts(foot_pos: np.ndarray, flat_heights: np.ndarray, fps: float,
             belt = med
     rel_speed = np.linalg.norm(v - belt, axis=-1)
     mask = low & (rel_speed < cfg.speed_threshold)
+    if foot_groups is not None:
+        # pied d'appui : le pied nettement le plus bas a ses points bas au contact, même si
+        # la vitesse estimée (bruitée en profondeur en monoculaire) dépasse le seuil
+        foot_h = np.stack([h[:, g].min(1) for g in foot_groups], axis=1)  # (T, nb pieds)
+        order = np.sort(foot_h, axis=1)
+        lowest = np.argmin(foot_h, axis=1)
+        clear = (order[:, 1] - order[:, 0]) > cfg.stance_margin if foot_h.shape[1] > 1 else np.ones(T, bool)
+        for k, g in enumerate(foot_groups):
+            stance = clear & (lowest == k)
+            for f in g:
+                near = h[:, f] < foot_h[:, k] + cfg.stance_margin
+                mask[:, f] |= stance & low[:, f] & near & (rel_speed[:, f] < 2 * cfg.speed_threshold)
     mask = np.stack([smooth_bool(mask[:, f], cfg.min_frames) for f in range(F)], axis=1)
 
     targets = np.full((T, F, 3), np.nan)

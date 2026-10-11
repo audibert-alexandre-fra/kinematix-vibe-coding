@@ -1,0 +1,66 @@
+RAPPORT — InstantHMR
+https://github.com/mohamdev/InstantHMR — poids : https://huggingface.co/momolesang/InstantHMR
+Date : 2026-10-11 — Machine : Apple M3 Pro (12 cœurs CPU, 36 Go), macOS 14.4, pas de GPU NVIDIA
+
+1. DESCRIPTION
+--------------
+Régresseur léger de corps MHR (Momentum Human Rig, Meta) : backbone RepViT-M1.5 + décodeur
+à 9 tokens + conditionnement caméra CLIFF. Entrée : crop 224x224 d'une personne. Sorties :
+paramètres MHR (204), forme (45), translation caméra, 70 keypoints 2D et 3D (format MHR70,
+identique à SAM 3D Body). Entraîné sur les annotations publiées de facebook/sam-3d-body-dataset.
+Détecteur de personnes associé : RF-DETR (Roboflow).
+
+2. INSTALLATION : RÉUSSIE
+-------------------------
+  - Poids ONNX fp16 (77 Mo) téléchargés depuis HuggingFace (non soumis à acceptation).
+  - Dépendances : onnxruntime (CPU + CoreML inclus sur macOS), rfdetr 1.11 (+ torch 2.14).
+  - Intégré dans le projet via uv (extra "detector") ; le dépôt d'origine est utilisé seulement
+    pour le benchmark (tools/bench_instanthmr.py), notre backend réimplémente le
+    pré-traitement (src/kinematix_vibe_coding/models/instanthmr.py).
+
+3. DIFFICULTÉS RENCONTRÉES
+--------------------------
+  - Incompatibilité d'API avec rfdetr 1.11 : `optimize_for_inference()` n'existe plus
+    (AttributeError) -> appel rendu conditionnel.
+  - Le fichier ONNX publié n'a pas de métadonnées "cliff_focal" : conditionnement CLIFF en
+    pixels normalisés et focale implicite = diagonale de l'image (à respecter pour la
+    reprojection).
+  - Pas de score de confiance par keypoint en sortie.
+  - Le maillage dense MHR nécessite pymomentum (Python 3.12) : non nécessaire pour nous (les
+    70 keypoints 3D suffisent comme marqueurs virtuels).
+  - CoreML n'accélère pas ce modèle sur M3 Pro (fp16, opérateurs partiellement supportés) :
+    CPU plus rapide.
+
+4. LICENCE — USAGE COMMERCIAL AUTORISÉ
+---------------------------------------
+  - Code : Apache-2.0. Poids : licence SAM (Meta) — autorise l'usage commercial (avec
+    restrictions d'usage listées dans la licence SAM, ex. pas d'usage militaire / ITAR).
+  - RF-DETR nano/small/medium/base : Apache-2.0.
+  => Retenu comme modèle de pose principal de la pipeline.
+
+5. TEMPS D'INFÉRENCE MESURÉS (squat1/raw-video-cam0, 800x600, 60 images, dépôt d'origine)
+-----------------------------------------------------------------------------------------
+  Exécution        Détecteur    RF-DETR    InstantHMR   Total       FPS
+  CPU              nano         41,3 ms    63,2 ms      104,5 ms    9,6
+  CPU              medium       47,1 ms    61,7 ms      108,8 ms    9,2
+  CoreML           nano         43,5 ms    69,9 ms      113,4 ms    8,8
+  CoreML           medium       64,7 ms    101,4 ms     166,1 ms    6,0
+  (chargement des modèles : 8–10 s)
+
+  Dans notre pipeline (RF-DETR medium chaque image + InstantHMR avec flip test-time
+  augmentation, batch de 16) : ≈ 210–260 ms / image sur CPU, ex. gait1/cam0 (130 images
+  1920x1080) : 33,8 s.
+
+6. ESTIMATION / MESURES GPU (données du dépôt, RTX 4070, ORT CUDA fp16)
+-----------------------------------------------------------------------
+  InstantHMR seul : ≈ 5 ms / image (200 FPS) ; RF-DETR medium : ≈ 27 ms / image ;
+  total ≈ 32 ms (31 FPS), ≈ 12 ms avec --detector-stride 4.
+  => Une vidéo de 300 images : ≈ 10 s sur GPU (≈ 20 s avec flip TTA).
+
+7. CONCLUSION
+-------------
+Installation simple, modèle rapide (≈ 10 FPS sur CPU), sorties 3D métriques cohérentes avec
+le 2D (erreur de reprojection médiane ≈ 8 px), licence compatible commerciale.
+Limites : précision inférieure au "professeur" SAM 3D Body, profondeur absolue (cam_trans)
+bruitée -> compensée dans notre pipeline par le filtrage, la calibration par la taille, la
+contrainte de reprojection 2D et les contacts au sol.
