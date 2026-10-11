@@ -1,0 +1,70 @@
+{
+  "video": "data/random1/la-derniere-danse-cam1.mp4",
+  "backend": "mediapipe",
+  "n_frames": 256,
+  "fps": 26.78,
+  "height_m": 1.8,
+  "data_scale": 0.9938512012071029,
+  "dimensions_m": {
+    "ankle_height": 0.07547351513609427,
+    "shank": 0.4077858511459417,
+    "thigh": 0.38648502505945614,
+    "hip_width": 0.20132847020412795,
+    "pelvis_to_lumbar": 0.09013108390724804,
+    "torso": 0.38818974056744737,
+    "shoulder_width": 0.3319539020368236,
+    "shoulder_drop": 0.028959818494223587,
+    "neck_to_eyes": 0.3192473914507491,
+    "eyes_to_top": 0.13190086502754084,
+    "upper_arm": 0.24467852388554004,
+    "forearm": 0.22358036906740658,
+    "hand": 0.08612917321227573,
+    "foot_length": 0.17278695821774884,
+    "heel_back": 0.06661856336114973
+  },
+  "model_standing_height_m": 1.7992134722944775,
+  "calibration_rmse_cm": {
+    "before": 4.274466354604594,
+    "after": 1.8341865248278273
+  },
+  "ik_marker_error_cm": {
+    "median": 1.850962893663636,
+    "mean": 2.3759587559270825
+  },
+  "reprojection_error_px": {
+    "median": 5.044492197796023,
+    "mean": 5.526200496204942
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 24.927761373176374,
+    "sliding_drift_mean_cm": 15.54982937549597,
+    "contact_ratio": 0.728515625
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 9.29276950061225,
+    "sliding_drift_mean_cm": 0.7063037842448782,
+    "contact_ratio": 0.728515625
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "treadmill_max_root_speed": 0.3,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 37.35298462985975,
+    "pose_loading_s": 0.036950124998838874,
+    "calibration_s": 2.162860874999751,
+    "ik_pass1_s": 0.5566269170012674,
+    "ik_pass2_s": 0.731959958000516,
+    "outputs_s": 0.9066895409996505,
+    "total_s": 41.71112192086093
+  }
+}

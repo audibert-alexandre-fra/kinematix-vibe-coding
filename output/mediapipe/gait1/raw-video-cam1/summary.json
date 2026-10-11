@@ -1,0 +1,70 @@
+{
+  "video": "data/gait1/raw-video-cam1.mp4",
+  "backend": "mediapipe",
+  "n_frames": 129,
+  "fps": 30.012796153398735,
+  "height_m": 1.8,
+  "data_scale": 1.0026387230709555,
+  "dimensions_m": {
+    "ankle_height": 0.07546725755183772,
+    "shank": 0.41340909116206226,
+    "thigh": 0.3763771297645258,
+    "hip_width": 0.21568188706344849,
+    "pelvis_to_lumbar": 0.08409115733129788,
+    "torso": 0.4090362034466063,
+    "shoulder_width": 0.29321080578993586,
+    "shoulder_drop": 0.029003158286940382,
+    "neck_to_eyes": 0.30815148213440996,
+    "eyes_to_top": 0.1326460561089203,
+    "upper_arm": 0.2625909979472701,
+    "forearm": 0.22960522983588602,
+    "hand": 0.08010093171237206,
+    "foot_length": 0.17755848982346925,
+    "heel_back": 0.06690842084043161
+  },
+  "model_standing_height_m": 1.7991783774996604,
+  "calibration_rmse_cm": {
+    "before": 4.120360646201491,
+    "after": 1.990118353081707
+  },
+  "ik_marker_error_cm": {
+    "median": 2.2671211857214435,
+    "mean": 2.5984010631827275
+  },
+  "reprojection_error_px": {
+    "median": 9.416979897339939,
+    "mean": 11.423911432602049
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 45.925613171342206,
+    "sliding_drift_mean_cm": 6.705631675065665,
+    "contact_ratio": 0.29844961240310075
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 15.638161494913383,
+    "sliding_drift_mean_cm": 0.46896782708241114,
+    "contact_ratio": 0.29844961240310075
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "treadmill_max_root_speed": 0.3,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 23.71585201113885,
+    "pose_loading_s": 0.03448033400127315,
+    "calibration_s": 1.9289099160014302,
+    "ik_pass1_s": 0.3349386660011078,
+    "ik_pass2_s": 0.35967279200121993,
+    "outputs_s": 2.4166912079999747,
+    "total_s": 28.756064593142582
+  }
+}

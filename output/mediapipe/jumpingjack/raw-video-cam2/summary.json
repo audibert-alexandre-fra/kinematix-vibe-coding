@@ -1,0 +1,70 @@
+{
+  "video": "data/jumpingjack/raw-video-cam2.mp4",
+  "backend": "mediapipe",
+  "n_frames": 42,
+  "fps": 29.49852507374631,
+  "height_m": 1.8,
+  "data_scale": 0.9700413215795807,
+  "dimensions_m": {
+    "ankle_height": 0.07877172437911717,
+    "shank": 0.39030701526873773,
+    "thigh": 0.3626059887730531,
+    "hip_width": 0.17965728708466028,
+    "pelvis_to_lumbar": 0.09438223625402249,
+    "torso": 0.39984308851919836,
+    "shoulder_width": 0.316267512611808,
+    "shoulder_drop": 0.029272367995804356,
+    "neck_to_eyes": 0.3312087720204693,
+    "eyes_to_top": 0.14163616295171552,
+    "upper_arm": 0.21937456474924097,
+    "forearm": 0.20146702553110546,
+    "hand": 0.07469257302351409,
+    "foot_length": 0.16280322480381115,
+    "heel_back": 0.06637995984522457
+  },
+  "model_standing_height_m": 1.7987549881663139,
+  "calibration_rmse_cm": {
+    "before": 4.975252218084319,
+    "after": 2.5330890267986828
+  },
+  "ik_marker_error_cm": {
+    "median": 2.235598454411792,
+    "mean": 2.7344653868726874
+  },
+  "reprojection_error_px": {
+    "median": 7.471515994843633,
+    "mean": 8.503345425902308
+  },
+  "treadmill_belt_velocity_m_s": [
+    0.0,
+    0.0
+  ],
+  "foot_sliding_before": {
+    "sliding_speed_mean_cm_s": 58.353929453202156,
+    "sliding_drift_mean_cm": 9.180576718518859,
+    "contact_ratio": 0.23015873015873015
+  },
+  "foot_sliding_after": {
+    "sliding_speed_mean_cm_s": 11.91041131172567,
+    "sliding_drift_mean_cm": 0.6675732202020995,
+    "contact_ratio": 0.23015873015873015
+  },
+  "contact_config": {
+    "height_threshold": 0.05,
+    "speed_threshold": 0.5,
+    "stance_margin": 0.03,
+    "min_frames": 3,
+    "treadmill_min_speed": 0.2,
+    "treadmill_max_root_speed": 0.3,
+    "weight": 50.0
+  },
+  "timings_s": {
+    "pose_estimation_s": 9.245762459792786,
+    "pose_loading_s": 0.021043832999566803,
+    "calibration_s": 3.1214263330002723,
+    "ik_pass1_s": 0.13166508300128044,
+    "ik_pass2_s": 0.11550754099880578,
+    "outputs_s": 0.28969974999927217,
+    "total_s": 12.904061166792417
+  }
+}
