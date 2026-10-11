@@ -78,8 +78,8 @@ uv run kinematix batch data --out output  # toutes les vidéos
         estimation du plan du sol, calibration automatique des segments par optimisation MuJoCo + tests.
 - [x] 11. `inverse_kinematix/` : IK MuJoCo (Levenberg-Marquardt, limites articulaires, warm-start),
         détection des contacts pieds, contraintes anti-glissement + tests (glissement ≈ 0).
-- [ ] 12. CLI `kinematix run/batch` : pipeline complet, export qpos/angles CSV/overlay, timings (< 5 min).
-- [ ] 13. Évaluation multi-vues : comparaison des angles articulaires entre caméras d'un même
+- [x] 12. CLI `kinematix run/batch` : pipeline complet, export qpos/angles CSV/overlay, timings (< 5 min).
+- [x] 13. Évaluation multi-vues : comparaison des angles articulaires entre caméras d'un même
         mouvement (synchronisation temporelle, RMSE, corrélation).
 - [ ] 14. `output/` : exécution sur toutes les vidéos de `data/` + `rapport/compte_rendu_performances.txt`.
 - [ ] 15. Projection du squelette sur toutes les vidéos (overlays) et livraison.
