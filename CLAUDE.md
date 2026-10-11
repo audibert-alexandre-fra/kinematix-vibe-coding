@@ -73,7 +73,7 @@ uv run kinematix batch data --out output  # toutes les vidéos
 - [ ] 7. `models/` : interface `PoseBackend` + `PoseSequence`, détecteur personne (licence commerciale),
         backend InstantHMR (+ SAM3D si dispo), suivi de la personne principale + tests.
 - [ ] 8. `utils/` : définitions squelettes (MHR70), filtres temporels, rendu overlay + tests.
-- [ ] 9. Modèle humain MuJoCo paramétrique (généré par MjSpec, licence libre) avec sites marqueurs.
+- [x] 9. Modèle humain MuJoCo paramétrique (généré par MjSpec, licence libre) avec sites marqueurs.
 - [ ] 10. `calibration/` : marqueurs virtuels depuis keypoints, mise à l'échelle par taille connue,
         estimation du plan du sol, calibration automatique des segments par optimisation MuJoCo + tests.
 - [ ] 11. `inverse_kinematix/` : IK MuJoCo (Levenberg-Marquardt, limites articulaires, warm-start),
